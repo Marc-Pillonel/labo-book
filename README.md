@@ -68,9 +68,12 @@ git push                       # → site régénéré en ~1-2 min
 
 ### 1. GitHub Pages
 
-1. Sur le dépôt : **Settings → Pages → Source** : sélectionner la branche
-   `gh-pages` (elle sera créée par le premier *push* de la CI).
-2. Vérifier le build dans l'onglet **Actions** après le premier *push*.
+Aucune configuration normale : la CI active Pages automatiquement
+(source : **GitHub Actions**) et déploie le rendu à chaque *push* sur `main`.
+
+Si la première exécution échoue sur l'étape de déploiement :
+1. **Settings → Pages → Build and deployment → Source** : choisir **GitHub Actions**.
+2. Relancer le workflow (onglet **Actions → Rerun**).
 
 ### 2. giscus (commentaires en bas de page)
 

@@ -1,16 +1,22 @@
-name: Quarto Publish
+name: Build and Deploy
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      discussions: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,9 +24,31 @@ jobs:
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render and publish
-        uses: quarto-dev/quarto-actions/publish@v2
-        with:
-          target: gh-pages
+      - name: Render site
+        run: quarto render
+
+      # Active (ou reconfigure) le site Pages avec « Source : GitHub Actions ».
+      # Échec silencieux : voir README.md (activation manuelle possible).
+      - name: Ensure Pages site (workflow build)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method PUT "repos/${GITHUB_REPOSITORY}/pages" -f build_type=workflow 2>/dev/null \
+            || gh api --method POST "repos/${GITHUB_REPOSITORY}/pages" -f build_type=workflow 2>/dev/null \
+            || echo "::warning::Activation Pages impossible via l'API — définir Settings > Pages > Source = GitHub Actions, puis Re-run."
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
