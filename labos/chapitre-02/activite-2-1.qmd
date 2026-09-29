@@ -1,0 +1,34 @@
+---
+title: "Activité 2.1 — [Titre de l'activité]"
+date: "AAAA-MM-JJ"
+---
+
+<!--
+  MODÈLE D'ACTIVITÉ — nouveau chapitre = nouveau dossier dans labos/
+  (ajouter la section correspondante dans _quarto.yml).
+-->
+
+## Objectifs
+
+- *[Objectif 1]*
+
+## Matériel et environnement
+
+| Élément | Détail |
+|---|---|
+| Système | |
+| Outils | |
+
+## Procédure
+
+1. *[Étape 1]*
+
+## Observations
+
+| # | Point contrôlé | Résultat attendu | Résultat obtenu | Conforme |
+|---|---|---|---|---|
+| 1 | | | | |
+
+## Conclusion
+
+*[Bilan en quelques lignes.]*

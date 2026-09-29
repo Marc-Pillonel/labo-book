@@ -1,0 +1,69 @@
+project:
+  type: website
+
+website:
+  title: "Cahier de laboratoire"
+  site-url: https://marc-pillonel.github.io/labo-book/
+  repo-url: https://github.com/Marc-Pillonel/labo-book
+  repo-actions: [edit]
+  page-navigation: true
+  back-to-top-navigation: true
+  search:
+    location: navbar
+    type: overlay
+
+  navbar:
+    pinned: true
+    background: primary
+    left:
+      - icon: house-fill
+        href: index.qmd
+        aria-label: "Accueil"
+      - text: "Guide de relecture"
+        href: relecture.qmd
+    right:
+      - icon: github
+        href: https://github.com/Marc-Pillonel/labo-book
+        aria-label: "Dépôt GitHub"
+
+  sidebar:
+    style: docked
+    background: light
+    border: true
+    contents:
+      - text: "Introduction"
+        href: index.qmd
+      - section: "Chapitre 1"
+        contents: labos/chapitre-01/*
+      - section: "Chapitre 2"
+        contents: labos/chapitre-02/*
+      - text: "Guide de relecture"
+        href: relecture.qmd
+
+  # Systèmes de commentaires (voir README.md pour la configuration manuelle)
+  comments:
+    # Commentaires inline : le lecteur souligne un texte et annote dans la marge.
+    hypothesis:
+      theme: clean
+      openSidebar: false
+    # Commentaires par page : section en bas de page, adossée aux GitHub Discussions.
+    giscus:
+      repo: Marc-Pillonel/labo-book
+      repo-id: R_kgDOUxvzZA
+      category: General
+      mapping: pathname
+      reactions-enabled: true
+      input-position: bottom
+      theme: preferred_color_scheme
+
+format:
+  html:
+    theme:
+      - cosmo
+      - styles.scss
+    include-in-header: includes/fonts.html
+    toc: true
+    toc-depth: 3
+    anchor-sections: true
+    smooth-scroll: true
+    code-copy: true

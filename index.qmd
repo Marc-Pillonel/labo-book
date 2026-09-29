@@ -1,0 +1,44 @@
+---
+title: "Cahier de laboratoire"
+subtitle: "3275.1 — Conception d'opérations de sécurité"
+description: "Cahier de laboratoire : activités réalisées au fil du cours, organisées par chapitre."
+---
+
+Bienvenue dans mon cahier de laboratoire pour le cours **3275.1 — Conception d'opérations de sécurité**.
+Chaque activité réalisée en cours y est documentée : objectifs, matériel, procédure, observations et conclusion.
+
+## Organisation du cahier
+
+Le cahier est structuré par **chapitres**, chacun contenant une ou plusieurs **activités** :
+
+| Chapitre | Contenu |
+|---|---|
+| [Chapitre 1](labos/chapitre-01/activite-1-1.qmd) | Premières activités — modèle de rédaction |
+| [Chapitre 2](labos/chapitre-02/activite-2-1.qmd) | Activités du deuxième chapitre |
+
+Chaque activité suit la même structure :
+
+1. **Objectifs** — ce que l'activité vise à démontrer
+2. **Prérequis** — connaissances et accès nécessaires
+3. **Matériel et environnement** — outils, versions, configuration
+4. **Procédure** — étapes réalisées, avec les commandes et captures pertinentes
+5. **Observations** — résultats obtenus vs résultats attendus
+6. **Analyse et conclusion** — interprétation et points à retenir
+
+## Workflow de production
+
+Le site est entièrement généré à partir de fichiers Markdown, versionnés avec Git :
+
+```{mermaid}
+flowchart LR
+    A["Édition locale\n(.qmd + quarto preview)"] --> B["git push"]
+    B --> C["GitHub Actions\n(rendu Quarto)"]
+    C --> D["GitHub Pages\n(site en ligne)"]
+    D --> E["Relecture\n(annotations + commentaires)"]
+    E --> A
+```
+
+## Relecture
+
+La relecture se fait directement sur le site en ligne — voir le
+[Guide de relecture](relecture.qmd) pour la procédure détaillée.

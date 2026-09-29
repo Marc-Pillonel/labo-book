@@ -1,0 +1,15 @@
+# Sortie de rendu Quarto
+_site/
+.quarto/
+
+# Divers
+*.log
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
+
+/.quarto/
+**/*.quarto_ipynb

@@ -1,0 +1,29 @@
+---
+title: "Activité 1.2 — [Titre de l'activité]"
+date: "AAAA-MM-JJ"
+---
+
+<!--
+  MODÈLE D'ACTIVITÉ (version courte) — même structure que activite-1-1,
+  adaptée aux activités plus simples.
+-->
+
+## Objectifs
+
+- *[Objectif 1]*
+
+## Procédure
+
+1. *[Étape 1]*
+2. *[Étape 2]*
+3. *[Étape 3]*
+
+## Observations
+
+| # | Point contrôlé | Résultat attendu | Résultat obtenu | Conforme |
+|---|---|---|---|---|
+| 1 | | | | |
+
+## Conclusion
+
+*[Bilan en quelques lignes.]*

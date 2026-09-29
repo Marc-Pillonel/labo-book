@@ -1,0 +1,80 @@
+---
+title: "Activité 1.1 — [Titre de l'activité]"
+date: "AAAA-MM-JJ"
+---
+
+<!--
+  MODÈLE D'ACTIVITÉ — instructions :
+  · Remplacer le titre et la date dans le front matter ci-dessus.
+  · Supprimer les crochets [ ] et les indications entre parenthèses.
+  · Chaque activité = un fichier .qmd dans le dossier du chapitre correspondant.
+-->
+
+## Objectifs
+
+::: {.callout-note icon=false}
+- Objectif principal de l'activité (ce qui doit être démontré ou mis en place).
+- Objectif secondaire.
+- Contrainte imposée (ex. : sans interruption de service, en environnement isolé).
+:::
+
+## Prérequis
+
+- Connaissances : *[théorie du chapitre 1, notions vues en cours...]*
+- Accès : *[compte, VM, équipement, droits administrateur requis...]*
+
+## Matériel et environnement
+
+| Élément | Détail |
+|---|---|
+| Système | *[ex. : Kali Linux 2026.1 / Debian 12 / Windows 11]* |
+| Outils | *[ex. : nmap 7.95, Wireshark 4.4]* |
+| Réseau | *[topologie : LAN de labo 192.168.1.0/24, VM cible]* |
+| Comptes | *[ex. : utilisateur `analyste`, droits limités]* |
+
+## Procédure
+
+### Étape 1 — *[titre de l'étape]*
+
+*[Décrire l'action réalisée. Donner la commande exécutée et son résultat pertinent.]*
+
+```bash
+# Exemple de commande
+commande --option cible
+```
+
+*[Insérer une capture d'écran si pertinent (dossier `images/` à côté du .qmd) :]*
+
+```markdown
+![](images/etape-1.png)
+```
+
+### Étape 2 — *[titre de l'étape]*
+
+*[Nouvelle étape...]*
+
+### Étape 3 — *[titre de l'étape]*
+
+*[...]*
+
+## Observations
+
+| # | Point contrôlé | Résultat attendu | Résultat obtenu | Conforme |
+|---|---|---|---|---|
+| 1 | *[ex. : port 22 ouvert]* | *[attendu]* | *[obtenu]* | ✅ / ❌ |
+| 2 | | | | |
+| 3 | | | | |
+
+## Analyse et conclusion
+
+*[Interpréter les observations : le résultat correspond-il à l'objectif ?
+Si non, quelle est la cause racine identifiée ?]*
+
+::: {.callout-tip}
+**Points à retenir** — résumer en 2–3 phrases les apprentissages clés de
+l'activité et leur lien avec la théorie du chapitre.
+:::
+
+## Références
+
+- *[documentation officielle, RFC, article...]*

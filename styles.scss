@@ -1,0 +1,85 @@
+/*-- scss:defaults --*/
+
+// ============================================================
+// Thème « ingénieur » — bleu acier, typographie technique
+// ============================================================
+
+// --- Couleurs ---
+$primary: #10395e;          // bleu acier profond (navbar, éléments actifs)
+$secondary: #5b6c7d;        // gris technique
+$success: #1d7a5f;
+$info: #2a6f97;
+$warning: #b26b00;
+$danger: #a4243b;
+
+$body-color: #1d2530;
+$link-color: #0d5a94;
+$headings-color: #12324f;
+
+// --- Typographie ---
+$font-family-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif;
+$font-family-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+  Consolas, "Liberation Mono", monospace;
+
+$headings-font-weight: 600;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+
+// --- Divers ---
+$border-radius: 0.25rem;
+$enable-shadows: false;
+
+/*-- scss:rules --*/
+
+// Barre de navigation : filet accentué sous le navbar
+.navbar {
+  border-bottom: 3px solid #0b2a47;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+// Liens de navigation de la barre latérale
+.sidebar .sidebar-link.active {
+  font-weight: 600;
+}
+
+// Titres de sections (chapitres) dans la barre latérale
+.sidebar li.sidebar-item-section .menu-text {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+// Encadrés (callouts) : bordure plus marquée
+.callout {
+  border-left-width: 4px;
+}
+
+// Tableaux « techniques » : en-têtes en petites capitales
+.table > :not(caption) > * > * {
+  padding: 0.55rem 0.75rem;
+}
+
+.table thead th {
+  text-transform: uppercase;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: $secondary;
+  border-bottom-width: 2px;
+}
+
+// Blocs de code : légèrement plus compacts
+pre code {
+  font-size: 0.87em;
+}
+
+// Pied de page des documents
+.page-footer {
+  border-top: 1px solid #dee2e6;
+  color: $secondary;
+}
