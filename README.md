@@ -66,14 +66,14 @@ git push                       # → site régénéré en ~1-2 min
 
 > Ces étapes nécessitent l'interface web et ne peuvent pas être automatisées.
 
-### 1. GitHub Pages
+### 1. GitHub Pages (activation une seule fois, manuelle)
 
-Aucune configuration normale : la CI active Pages automatiquement
-(source : **GitHub Actions**) et déploie le rendu à chaque *push* sur `main`.
+GitHub impose ce clic une fois par dépôt (l'API interdit l'activation via le
+`GITHUB_TOKEN` des workflows) :
 
-Si la première exécution échoue sur l'étape de déploiement :
-1. **Settings → Pages → Build and deployment → Source** : choisir **GitHub Actions**.
-2. Relancer le workflow (onglet **Actions → Rerun**).
+1. **Settings → Pages → Build and deployment → Source** : **GitHub Actions**.
+2. Relancer le dernier run (onglet **Actions → ⋯ → Re-run all jobs**) ou
+   pousser une modification : le site est déployé à chaque *push* sur `main`.
 
 ### 2. giscus (commentaires en bas de page)
 

@@ -27,16 +27,6 @@ jobs:
       - name: Render site
         run: quarto render
 
-      # Active (ou reconfigure) le site Pages avec « Source : GitHub Actions ».
-      # Échec silencieux : voir README.md (activation manuelle possible).
-      - name: Ensure Pages site (workflow build)
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api --method PUT "repos/${GITHUB_REPOSITORY}/pages" -f build_type=workflow 2>/dev/null \
-            || gh api --method POST "repos/${GITHUB_REPOSITORY}/pages" -f build_type=workflow 2>/dev/null \
-            || echo "::warning::Activation Pages impossible via l'API — définir Settings > Pages > Source = GitHub Actions, puis Re-run."
-
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
