@@ -1,61 +1,51 @@
 ---
 title: "Guide de relecture"
-description: "Commentaire et annotation du cahier de laboratoire en ligne."
+description: "Comment annoter le cahier de laboratoire en ligne."
 ---
 
 Ce cahier est consultable en ligne à l'adresse :
 **<https://marc-pillonel.github.io/labo-book/>**
 
-Deux canaux de commentaires sont disponibles sur chaque page.
+Les retours se font par des **annotations ancrées dans le texte** : vous
+soulignez un passage, et votre commentaire s'affiche dans la marge, à côté —
+comme des notes manuscrites sur un document papier. Il n'y a rien à installer.
 
-## 1. Annotations dans le texte (Hypothesis)
-
-Permet de **souligner un passage précis** et d'y attacher un commentaire,
-comme une note dans la marge d'un document.
-
-### Première mise en route (une seule fois)
+## Mise en route (une seule fois)
 
 1. Créer un compte gratuit sur <https://hypothes.is/signup>.
 2. Ouvrir le site du cahier (lien ci-dessus).
-3. Cliquer sur **Sign in** dans la sidebar qui apparaît à droite de la page
-   (l'icône de bulle dans le coin supérieur droit ouvre/ferme la sidebar).
-4. Rejoindre le **groupe privé** du cours via le lien d'invitation
-   *(communiqué séparément par email — il ne figure pas ici pour rester confidentiel)*.
-5. Dans la sidebar, sélectionner le groupe dans le menu déroulant en haut
-   *(par défaut « Public » — bien choisir le groupe pour que vos commentaires
-   restent visibles uniquement entre nous)*.
-
-### Annoter
-
-1. Sélectionner le texte à commenter avec la souris.
-2. Cliquer sur **Annotate** (ou **Highlight** pour un simple surlignage).
-3. Rédiger le commentaire, puis **Publish**.
+3. Ouvrir la sidebar Hypothesis : bouton en forme de bulle, en haut à droite
+   de la page (ou icône 🗨️ dans la barre du navigateur).
+4. Cliquer sur **Sign in** dans la sidebar, puis se connecter.
+5. Rejoindre le groupe privé du cahier :
+   <https://hypothes.is/groups/yR9P8X3a/labo-book>
+   (le lien mène à la page du groupe → **Join group**).
+6. Dans la sidebar, sélectionner le groupe **`labo-book`** dans le menu déroulant
+   en haut (par défaut c'est « Public » — sans cela, les annotations ne
+   seraient pas visibles dans le groupe). Ce choix est mémorisé.
 
 ::: {.callout-note}
-Les annotations sont automatiquement liées au passage de texte concerné :
-même si le contenu de la page change, la citation d'origine reste attachée.
-::: 
-
-## 2. Commentaires en bas de page (giscus / GitHub)
-
-Permet un **commentaire général sur la page entière** (par exemple « revoir
-la conclusion de l'activité 2 »).
-
-1. Descendre tout en bas de la page concernée.
-2. Cliquer sur **Sign in with GitHub** (compte GitHub requis).
-3. Rédiger le commentaire : il est enregistré dans les Discussions du dépôt.
-
-::: {.callout-warning}
-Les commentaires giscus sont **publics** (les discussions GitHub du dépôt
-sont ouvertes). Réservez ce canal aux remarques générales ; les retours plus
-détaillés ou sensibles passent par les annotations Hypothesis (groupe privé).
+Les annotations postées dans le groupe `labo-book` ne sont visibles que par ses
+membres (l'auteur et le relecteur).
 :::
+
+## Annoter une page
+
+1. **Sélectionner le texte** à commenter avec la souris (surbrillance bleue).
+2. Cliquer sur **Annotate** (ou **Highlight** pour un simple surlignage sans
+   commentaire).
+3. Rédiger le commentaire, puis **Publish**.
+
+Pour répondre à une annotation existante, cliquer sur la pastille numérotée
+apparue dans la marge puis sur **Reply**.
 
 ## FAQ
 
 | Question | Réponse |
 |---|---|
-| Faut-il installer quelque chose ? | Non : tout se passe dans le navigateur (compte Hypothesis et/ou GitHub suffisent). |
-| Puis-je éditer le texte directement ? | Non : le cahier est édité par l'auteur. Vous annotez, je corrige et le site se met à jour automatiquement. |
-| Où voir les nouveaux commentaires ? | Dans la sidebar Hypothesis (onglet des nouveautés) ou dans les Discussions GitHub du dépôt. |
-| Le site change souvent ? | Oui : chaque *push* régénère le site en ~1 à 2 minutes. Rechargez la page pour voir la version à jour. |
+| Faut-il installer une extension ? | Non : tout se passe dans le navigateur, un compte gratuit suffit. |
+| Puis-je modifier le texte du cahier ? | Non : le cahier est édité par l'auteur. Vous annotez, je corrige, et le site se met à jour automatiquement. |
+| Comment corriger un passage donné ? | Mettez le commentaire sous la forme « *→ remplacer par : …* » : la correction est appliquée dans la version suivante. |
+| Le texte a changé depuis mon annotation ? | Pas d'impact : l'annotation reste liée à la **citation d'origine** du passage. |
+| Où voir les nouveaux commentaires ? | Dans la sidebar Hypothesis (icône de notification rouge → onglet des nouveautés, tri « Newest »). |
+| Le site change souvent ? | Oui : chaque *push* régénère le site en ~1 à 2 minutes. Recharger la page pour voir la version à jour. |

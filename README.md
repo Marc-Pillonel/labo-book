@@ -14,14 +14,13 @@ relecture annotée en ligne.
 | Rédaction locale | Quarto (`.qmd` = Markdown + YAML), preview live |
 | Versionnement | Git / GitHub |
 | Déploiement | GitHub Action → GitHub Pages (à chaque *push* sur `main`) |
-| Annotations inline | Hypothesis (groupe privé) — surlignage + commentaire dans la marge |
-| Commentaires par page | giscus (GitHub Discussions) — bas de page |
+| Annotations inline | Hypothesis (groupe privé `labo-book`) — surlignage + commentaire dans la marge |
 
 ## Structure du dépôt
 
 ```
 labo-book/
-├── _quarto.yml                  # config du site (navigation + commentaires)
+├── _quarto.yml                  # config du site (navigation + annotations)
 ├── styles.scss                  # thème « ingénieur » (palette, typographie)
 ├── includes/fonts.html          # Inter + JetBrains Mono
 ├── index.qmd                    # page d'accueil
@@ -75,32 +74,24 @@ GitHub impose ce clic une fois par dépôt (l'API interdit l'activation via le
 2. Relancer le dernier run (onglet **Actions → ⋯ → Re-run all jobs**) ou
    pousser une modification : le site est déployé à chaque *push* sur `main`.
 
-### 2. giscus (commentaires en bas de page)
+### 2. Hypothesis (annotations dans le texte) — fait le 2026-09-29
 
-1. **Settings → Discussions** : activer les Discussions du dépôt.
-2. Ouvrir <https://giscus.app>, renseigner le dépôt `Marc-Pillonel/labo-book`,
-   choisir la catégorie (généralement **General**).
-3. Copier `repo-id` / `category-id` dans `_quarto.yml`
-   (`repo-id` est déjà renseigné ; `category-id` est à compléter).
-4. Installer l'app **giscus** sur le dépôt (bouton « Enable » proposé par giscus).
+1. Compte gratuit créé, **groupe privé** `labo-book` créé :
+   <https://hypothes.is/groups/yR9P8X3a/labo-book>
+2. Annotation intégrées au site via `website.comments.hypothesis` (`_quarto.yml`).
+3. Reste à faire : **inviter le prof** sur le groupe et lui signaler qu'il doit
+   **sélectionner le groupe** dans la sidebar (par défaut « Public » — sinon
+   ses annotations restent publiques et hors du groupe).
 
-### 3. Hypothesis (annotations dans le texte)
-
-1. Créer un compte gratuit : <https://hypothes.is/signup>.
-2. Créer un **groupe privé** (ex. « Labo 3275 ») depuis la sidebar Hypothesis.
-3. Envoyer le lien d'invitation au prof **par email** (ne pas le publier :
-   ce lien donne accès au groupe).
-4. L'activer sur le site est déjà fait (`website.comments.hypothesis` dans
-   `_quarto.yml`).
-
-> ⚠️ Les annotations sont **publiques par défaut** : le prof doit sélectionner
-> le groupe dans la sidebar (une fois pour toutes, la sélection est mémorisée).
+> ⚠️ Le lien du groupe est public sur ce dépôt : quiconque le suit peut
+> rejoindre le groupe et lire les annotations. Régénérer un groupe si cela
+> devient un souci.
 
 ## Notes d'exploitation
 
 - **Visibilité** : dépôt et site sont publics — tout le monde peut *lire* le
-  cahier. Les annotations Hypothesis du groupe privé restent confidentielles ;
-  les commentaires giscus sont publics (Discussions GitHub ouvertes).
+  cahier. Les annotations postées dans le groupe privé `labo-book` ne sont
+  visibles que par ses membres (relecteur + auteur).
 - **Notifications** : emails Hypothesis pour les réponses/mentions ; pour les
   nouvelles annotations, consulter la sidebar de temps en temps.
 - **OneDrive** : ce dépôt vit dans un dossier synchronisé par OneDrive. En cas

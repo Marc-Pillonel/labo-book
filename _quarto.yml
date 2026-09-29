@@ -40,21 +40,11 @@ website:
       - text: "Guide de relecture"
         href: relecture.qmd
 
-  # Systèmes de commentaires (voir README.md pour la configuration manuelle)
+  # Annotations inline : le lecteur souligne un texte et annote dans la marge.
   comments:
-    # Commentaires inline : le lecteur souligne un texte et annote dans la marge.
     hypothesis:
       theme: clean
       openSidebar: false
-    # Commentaires par page : section en bas de page, adossée aux GitHub Discussions.
-    giscus:
-      repo: Marc-Pillonel/labo-book
-      repo-id: R_kgDOUxvzZA
-      category: General
-      mapping: pathname
-      reactions-enabled: true
-      input-position: bottom
-      theme: preferred_color_scheme
 
 format:
   html:
