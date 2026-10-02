@@ -91,4 +91,4 @@ Le signalement joue ici le rôle d'une détection : chaque entreprise ne voit qu
 
 ## Utilisation IA
 
-Rédaction intégrale des sections « Résultats » et « Interprétation des résultats » à partir du rapport semestriel 2025/II de l'OFCS, de l'IOCTA 2025 d'Europol et de la fiche du Conseil fédéral sur l'obligation de signalement. Les chiffres cités proviennent de ces documents ; le rapport OFCS étant semestriel, ils sont à revérifier à la date de relecture. Aucune donnée n'a été inventée.
+Rédaction partiel avec l'IA pour ajouter des éléments, review orthographique et syntaxique.
