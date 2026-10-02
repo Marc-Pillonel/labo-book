@@ -1,0 +1,58 @@
+---
+title: "Activité 3"
+subtitle: "Protection concrète d'un WordPress"
+date: "2026-10-02"
+---
+
+## Objectifs
+
+1. Comment l'intelligence collective et l'OSINT peuvent-ils améliorer la protection d'un site WordPress ?
+2. Exposer une stratégie de détection de serveurs WordPress, puis une attaque plus ou moins ciblée compte tenu de cette protection.
+
+## Identification des métiers pertinents
+
+- Analyste SOC, en charge de la surveillance et de la qualification des alertes.
+- Analyste OSINT / threat intelligence, qui alimente la détection par des IOC.
+- Pentester, qui conduit la partie offensive de l'exercice.
+- Développeur ou administrateur WordPress, cible directe de l'exercice.
+
+## Déroulement
+
+Je commence par recenser ce que l'OSINT et l'intelligence collective apportent à la défense, puis j'enchaîne sur la phase détection et la phase attaque.
+
+## Résultats
+
+### Apport de l'intelligence collective et de l'OSINT
+
+L'intelligence collective et l'OSINT renforcent la cybersécurité en transformant la défense en effort collaboratif, proactif et continu :
+
+- **Réduction de la surface d'attaque** : Bug Bounty, surveillance des fuites de données (Pastebin, dark web), détection de sous-domaines et d'API exposés.
+- **Menaces partagées** : plateformes communautaires (MISP, VirusTotal, OpenCTI) pour les IOC en temps réel (hachages, IP, domaines malveillants).
+- **Détection accélérée** : enquêtes collaboratives post-incident, cartographie collective des TTP via MITRE ATT&CK, règles de détection améliorées (Sigma, YARA).
+- **Prévention sociale** : cartographie du phishing via OSINT (LinkedIn, registres), signalement citoyen des arnaques.
+- **Automatisation IA** : traitement massif des données OSINT par NLP/ML pour corréler les IOC et alimenter le SOC ou le SOAR.
+- **Défis** : désinformation, double usage, conformité juridique (RGPD).
+
+### Stratégie de détection
+
+La première étape est la collecte d'information par OSINT, sur la base des cours du jour. Cela vient en complément d'une méthode que je connais et que j'ai déjà pu appliquer : la détection par contenu, où l'analyse du code contient des éléments qui permettent à quelqu'un d'initié à WordPress de savoir rapidement quel CMS est utilisé, s'il y en a un.
+
+### Stratégie d'attaque
+
+Une fois les éléments concrets collectés, on joue dessus. En guise d'attaque moins ciblée, on peut exploiter les éventuels plugins obsolètes, les failles SQL et le bruteforce sur `wp-admin`. Une fois un plugin périmé identifié, on a sa version et on peut agir dessus.
+
+## Interprétation des résultats
+
+Ma perception : l'intelligence collective et l'OSINT transforment la cybersécurité en un effort collaboratif, proactif et continu, mais ils ne se substituent pas au travail de détection interne. Les six axes ci-dessus produireont surtout du bruit tant qu'ils ne sont pas branchés sur une source de données que je contrôle.
+
+Sur la protection plus précisément, la détection préalable permet de limiter l'attaque à ce qui est réellement vulnérable, ce qui réduit le bruit et augmente le taux de succès. C'est ce qui fait la différence entre l'attaque aveugle sur `wp-login.php` et l'exploitation d'un plugin dont on connaît la version.
+
+## Références
+
+- slides-intro.pdf, p. 17 (activité 3, énoncé).
+- MITRE ATT&CK, <https://attack.mitre.org>.
+- MISP, VirusTotal, OpenCTI, Sigma, YARA.
+
+## Utilisation IA
+
+Aide à la génération de la partie « perception IA » (les six axes) et à sa mise en forme. La stratégie de détection et d'attaque ainsi que la conclusion sont reprises du cahier Word.

@@ -31,14 +31,14 @@ website:
     background: light
     border: true
     contents:
-      - text: "Introduction"
+      - text: "Navigation"
         href: index.qmd
       - section: "Chapitre 1"
         contents: labos/chapitre-01/*
       - section: "Chapitre 2"
         contents: labos/chapitre-02/*
-      - text: "Guide de relecture"
-        href: relecture.qmd
+      - section: "Interventions"
+        contents: labos/intervention/*
 
   # Annotations inline : le lecteur souligne un texte et annote dans la marge.
   comments:

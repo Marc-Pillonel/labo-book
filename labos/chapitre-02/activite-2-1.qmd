@@ -1,6 +1,7 @@
 ---
-title: "Activité 2.1 — [Titre de l'activité]"
-date: "AAAA-MM-JJ"
+title: "Activité 2.1"
+subtitle: "À compléter"
+date: "2026-10-02"
 ---
 
 <!--

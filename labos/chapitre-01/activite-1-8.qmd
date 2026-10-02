@@ -1,0 +1,94 @@
+---
+title: "Activité 8"
+subtitle: "Cybercriminalité : formes courantes et conséquences"
+date: "2026-10-02"
+---
+
+## Objectifs
+
+1. Résumer les formes courantes de cybercriminalité et leurs conséquences.
+2. Identifier qui sont les criminels.
+3. Expliquer pourquoi il faut distinguer attaque automatisée, attaque aveugle et attaque ciblée.
+4. Décrire ce que fait l'OFCS pour réduire ces risques.
+
+La cybercriminalité est l'ensemble des activités illégales et des infractions pénales commises via Internet, les réseaux informatiques ou des appareils numériques.
+
+## Identification des métiers pertinents
+
+L'activité touche l'analyse de menaces, la détection et la conformité. Les métiers concernés sont l'analyste threat intelligence, l'analyste SOC et DFIR, l'expert en cybercriminalité et l'analyste forensic dans le cadre judiciaire, l'analyste de conformité pour les obligations de signalement et de protection des données, et le RSSI/CISO, qui arbitre entre le risque et la continuité.
+
+## Déroulement
+
+Je commence par recenser les formes d'infractions, puis je regarde qui les commet et avec quels moyens. La distinction entre attaque automatisée, aveugle et ciblée vient ensuite, parce qu'elle commande les défenses. Je termine sur le rôle de l'OFCS et sur les chiffres du dernier rapport semestriel.
+
+## Résultats
+
+### Formes courantes et conséquences
+
+| Forme | Description | Conséquences typiques |
+|---|---|---|
+| Hameçonnage (phishing) et ingénierie sociale | Usurpation d'un expéditeur de confiance pour obtenir des identifiants ou déclencher une action | Vol de comptes, fraude bancaire, prise de contrôle de messagerie |
+| Compromission de comptes professionnels (BEC) | Détournement d'une conversation légitime pour demander un virement | Perte financière directe, très difficile à récupérer |
+| Fraude en ligne | Arnaques à l'investissement, faux services, fraude à la facture | Pertes financières pour les victimes, blanchiment |
+| Ransomware | Chiffrement de données suivi d'une demande de rançon | Arrêt de production, pertes de données, risque de destruction à la clé |
+| Vol et revente de données (*infostealer*, revente d'accès) | Exfiltration d'identifiants puis revente sur forum | Propagation par les comptes légitimes volés |
+| Attaques à la supply chain logicielle | Compromission d'un paquet ou d'un compte développeur | Diffusion malveillante à très grande échelle |
+| DDoS et extorsion | Saturation d'un service pour paralyser ou extorquer | Indisponibilité, perte de chiffre d'affaires |
+| Espionnage et sabotage étatiques | Intrusion durable à visée politique ou militaire | Fuite de données sensibles, atteinte aux infrastructures critiques |
+
+Deux traits ressortent du tableau. La très grande majorité des incidents ne sont pas des attaques techniques nouvelles mais de l'usage détourné de légitimité : un compte volé, une confiance usurpée. Et les conséquences sont rarement seulement techniques, puisque le coût final d'un ransomware est le temps d'arrêt, pas le chiffrement.
+
+### Qui sont les criminels
+
+Le milieu s'est industrialisé. Ce n'est plus l'individu isolé du début des années 2000, mais un marché de services.
+
+Les opérateurs de ransomware *affiliates* recrutent des affiliés, leur fournissent le malware, l'hébergement, le nettoyage des traces et la négociation, puis se partagent le butin. Qilin revendique plus de 700 victimes mondiales selon l'IOCTA 2025 d'Europol.
+
+À côté, des intermédiaires vendent l'accès initial (*Initial Access Brokers*) : ils n'écrivent pas de malware, ils achètent et revendent du temps d'accès. Le modèle « criminel en tant que service » va plus loin et fournit un ensemble clé en main, rançon, hébergement, effacement des traces et assistance aux victimes. C'est ce qui fait baisser la barrière technique d'entrée.
+
+Les acteurs étatiques et assimilés visent l'espionnage et le sabotage : APT29 (Russie), Static Tundra, Houken et Brickstorm, attribués à la Chine ou à la Russie. Le rapport OFCS 2025/II documente l'exploitation de 4 vulnérabilités Microsoft SharePoint en juillet 2025 par des acteurs chinois. Les hacktivistes occupent une position à part : NoName057(16) a été partiellement démantelé en juillet 2025, puis a repris ses activités quelques semaines plus tard, avec une motivation symbolique et un impact opérationnel réel.
+
+La frontière entre ces profils n'est pas fixe. L'OFCS documente la vente d'accès initiaux à des acteurs étatiques, ce qui montre que les réseaux se revendent entre eux.
+
+### Attaque automatisée, aveugle, ciblée
+
+| Type | Logique | Cible | Conséquence pour la défense |
+|---|---|---|---|
+| Automatisée | On industrialise un outil déjà rentable | Le maximum de victimes possibles | Filtrage de masse, changement de mot de passe, MFA : très efficace contre elle |
+| Aveugle | On vise au hasard, sans connaître l'organisation | Un terrain de jeu générique | Surface d'attaque réduite, durcissement des services exposés |
+| Ciblée | Reconnaissance préalable, choix de l'entrée, patience | Une organisation précise | Détection comportementale, pas seulement IoC : EDR, SIEM, threat intel |
+
+La distinction commande la défense. Les deux premiers types se combattent par des mesures de prévention peu coûteuses : un pare-feu et un MFA stoppent le scan automatique et l'attaque aveugle. Ils n'arrêtent pas un acteur qui a préparé l'intrusion, qui utilise des identifiants valides et qui se déplace lentement pour rester sous les seuils d'alerte.
+
+La frontière s'efface sous l'effet de l'IA. Les rapports 2025 d'Europol signalent l'usage de l'IA générative pour améliorer l'ingénierie sociale, ce qui industrialise la partie du travail qui demandait jusque-là de la main-d'œuvre.
+
+### Le rôle de l'OFCS
+
+L'OFCS agit sur deux leviers : mesurer et contraindre.
+
+Le premier est la connaissance. Le rapport semestriel 2025/II, publié le 30 mars 2026 sur la période juillet-décembre 2025, est le principal instrument : 29 006 déclarations volontaires, auxquelles s'ajoutent 145 déclarations obligatoires, premier relevé intégrant la nouvelle obligation légale. Le panorama fait apparaître 52 % de fraude, 79 incidents ransomware (dont 57 signalés directement) et 73 cas de BEC. À ce travail de mesure s'ajoute l'information des secteurs et des cantons, sous forme d'analyses de menaces et de recommandations.
+
+Le second est la contrainte. Depuis le 1er avril 2025, les exploitants d'infrastructures critiques doivent signaler toute cyberattaque à l'OFCS dans les 24 heures suivant sa détection. L'objectif affiché est d'aider les entreprises concernées à maîtriser l'attaque et d'alerter les autres exploitants à un stade précoce. La déclaration se fait par voie électronique via le site de l'OFCS.
+
+Le signalement joue ici le rôle d'une détection : chaque entreprise ne voit que son propre périmètre, et la déclaration agrège ces périmètres en une carte que personne ne pourrait dresser seul.
+
+## Interprétation des résultats
+
+**Le volume n'indique pas la gravité.** 29 006 déclarations volontaires sur un demi-semestre, contre 57 incidents ransomware : la fraude noie le signal. Le rapport semestriel se lit en distinguant fréquence et impact, pas en additionnant.
+
+**Le vecteur dominant est l'identité, pas la faille.** BEC, phishing, infostealers et comptes valides partagent un même point d'entrée. Or la mesure la plus efficace contre eux, le MFA, est aussi la moins spectaculaire et la moins priorisée en budget. Le classement d'investissement ne suit pas le classement des incidents.
+
+**La barrière technique n'existe plus.** La spécialisation entre développeur, hébergeur, négociateur et revendeur d'accès signifie qu'un attaquant n'a plus besoin de compétence en cybersécurité pour mener une campagne de ransomware. C'est l'argument qui pousse à traiter la sécurité comme une question organisationnelle, avec obligation de signalement et partage d'information.
+
+## Références
+
+- slides-intro.pdf, p. 35 (cybercriminalité, définition) et p. 36 (activité 8).
+- slides-intro.pdf, p. 31 (cyberstratégie nationale, Convention de Budapest, Convention de l'ONU contre la cybercriminalité).
+- OFCS, rapport semestriel 2025/II, publié le 30 mars 2026 : <https://www.ncsc.admin.ch/ncsc/fr/home/aktuell/im-fokus/2026/ncsc-hjb-2025-2.html>
+- Conseil fédéral, « L'obligation de signaler les cyberattaques contre des infrastructures critiques entre en vigueur le 1er avril 2025 », 7 mars 2025 : <https://www.admin.ch/fr/nsb?id=104400>
+- Europol, *Internet Organised Crime Threat Assessment 2025* (IOCTA 2025), « Steal, deal and repeat ».
+- MITRE ATT&CK, <https://attack.mitre.org>
+
+## Utilisation IA
+
+Rédaction intégrale des sections « Résultats » et « Interprétation des résultats » à partir du rapport semestriel 2025/II de l'OFCS, de l'IOCTA 2025 d'Europol et de la fiche du Conseil fédéral sur l'obligation de signalement. Les chiffres cités proviennent de ces documents ; le rapport OFCS étant semestriel, ils sont à revérifier à la date de relecture. Aucune donnée n'a été inventée.

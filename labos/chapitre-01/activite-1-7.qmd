@@ -1,0 +1,61 @@
+---
+title: "Activité 7"
+subtitle: "Surface d'attaque du kernel Linux"
+date: "2026-10-02"
+---
+
+## Objectifs
+
+Pourquoi la surface d'attaque du noyau Linux est-elle devenue récemment un problème ? Que faire dans le cas d'un opérateur cloud ?
+
+## Identification des métiers pertinents
+
+- Ingénieur cloud / SRE, exploitant des charges de travail mutualisées.
+- Ingénieur sécurité Linux (kernel, *eBPF*, *seccomp*).
+- Analyste runtime, en charge de la détection en production.
+- Architecte sécurité, arbitant le coût de la microVM face au risque d'évasion.
+
+## Déroulement
+
+J'analyse d'abord pourquoi le risque a changé, puis je liste les mesures applicables à un opérateur cloud.
+
+## Résultats
+
+### Pourquoi c'est devenu un problème
+
+Le noyau Linux, conçu pour des machines dédiées, est aujourd'hui au cœur des infrastructures cloud (AWS, GCP, Azure, Kubernetes). Les conteneurs (Docker, K8s) partagent le noyau hôte : une faille noyau permet une évasion de conteneur (*container escape*) et la compromission du nœud entier.
+
+Trois facteurs aggravent le risque :
+
+- l'isolement fictif des conteneurs ;
+- la complexité croissante (*eBPF*, `io_uring`, modules réseau et crypto) ;
+- l'écosystème multi-tenant, où du code non vérifié (*serverless*, CI/CD) s'exécute en permanence.
+
+Une seule faille noyau suffit à passer d'une exécution faible à *root*.
+
+### Mesures pour un opérateur cloud
+
+| Mesure | Mise en œuvre |
+|---|---|
+| Hardening | Désactiver `eBPF` non privilégié (`kernel.unprivileged_bpf_disabled=1`), restreindre `io_uring` et `user_namespaces` via `sysctl`/`seccomp`, bloquer les modules inutilisés (`algif_aead`, drivers anciens) |
+| MicroVMs | Remplacer l'isolation par conteneurs par des hyperviseurs légers (AWS Firecracker, gVisor, Kata Containers) pour annuler l'effet d'évasion |
+| Filtrage syscalls | Profils `seccomp` stricts (`RuntimeDefault`), suppression des capacités inutiles (`CAP_SYS_ADMIN`, `CAP_NET_ADMIN`), interdiction des conteneurs privilégiés ou `root` |
+| Détection runtime | Outils `eBPF` hôte (Falco, Tetragon, Tracee) pour repérer élévation de privilèges, modifications du page cache, modules noyau non signés |
+| Patch management | *Live patching* (Kpatch, KGraft, Canonical Livepatch) pour appliquer les correctifs critiques sans redémarrage ni interruption de service |
+
+## Interprétation des résultats
+
+Les mesures se répartissent en deux familles. Le hardening, le filtrage syscalls et le patch management réduisent la probabilité qu'une faille noyau soit exploitable, ou la corrigent avant exploitation. Les MicroVM et la détection runtime traitent l'impact : la microVM change le modèle d'isolation de façon structurelle, là où le durcissement d'un noyau partagé ne fait que déplacer la surface d'attaque.
+
+La détection runtime a un statut particulier. Elle est la seule mesure qui produit de l'information alors que la compromise a déjà eu lieu, ce qui l'aligne directement sur la fonction *Détecter* du NIST CSF vue en activité 6. C'est aussi la seule qui se fonde sur des indicateurs d'attaque comportementaux plutôt que sur des vulnérabilités connues.
+
+## Références
+
+- <https://forum.linux-gull.ch/pipermail/gull/2026-September/018335.html> (cité dans le cahier Word).
+- slides-intro.pdf, p. 34 (activité 7, énoncé).
+- Documentation gVisor, Kata Containers, AWS Firecracker.
+- Documentation Falco, Tetragon, Tracee.
+
+## Utilisation IA
+
+Reprise du texte du cahier Word, mise en tableau des cinq mesures.

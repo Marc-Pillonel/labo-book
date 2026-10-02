@@ -1,0 +1,58 @@
+---
+title: "Activité 6"
+subtitle: "Rôle de responsable de la sécurité d'une entreprise"
+date: "2026-10-02"
+---
+
+## Objectifs
+
+En prenant le rôle de responsable de la sécurité d'une entreprise (RSSI/CISO), discuter, démontrer et référencer l'affirmation suivante :
+
+> « Les piliers de la cybersécurité (confidentialité, intégrité, disponibilité ; ainsi qu'identifier, protéger, détecter et répondre, reprendre et récupérer) offrent un cadre indispensable pour protéger les entreprises face aux cybermenaces croissantes. »
+
+## Identification des métiers pertinents
+
+- RSSI / CISO, auteur de la politique de sécurité et garant de la posture.
+- GRC / analyste de risque, qui formalise l'évaluation.
+- Architecte sécurité, qui traduit les piliers en mesures techniques.
+- Auditeur et consultant, qui contrôlent la conformité.
+
+## Déroulement
+
+Je traite d'abord les trois piliers, qui définissent ce qu'il faut protéger. Il faut ensuite une structure pour agir tout au long du cycle de vie des risques, ce que fait le NIST CSF.
+
+## Résultats
+
+### Les trois piliers
+
+| Pilier | Définition opérationnelle | Risque métier associé | Mesure de contrôle |
+|---|---|---|---|
+| Confidentialité | Garantir que l'information n'est accessible qu'aux entités autorisées | Espionnage industriel, fuite de propriété intellectuelle, sanctions réglementaires (LPD, RGPD) | AES-256, RBAC, MFA |
+| Intégrité | Avoir la certitude que les données et les systèmes n'ont pas été altérés de façon illégitime | Fraude financière, falsification de sauvegarde, corruption de chaînes de production | Signature numérique, hachage, contrôle des modifications |
+| Disponibilité | Assurer l'accès opportun et fiable aux systèmes et aux données pour les processus métier | Interruption des opérations, perte directe de chiffre d'affaires, rupture de chaîne logistique | Redondance d'infrastructure, anti-DDoS, PRA/PCA |
+
+### Les cinq fonctions du NIST CSF
+
+| Fonction | Rôle |
+|---|---|
+| Identifier | On ne protège que ce que l'on connaît |
+| Protéger | Réduire la surface d'attaque et limiter la portée d'un compromis |
+| Détecter | Partir du principe que la frontière est déjà franchie |
+| Répondre | Contenir la menace pour minimiser les dommages opérationnels |
+| Rétablir | Assurer la résilience et le retour à la normale dans des délais maîtrisés |
+
+## Interprétation des résultats
+
+Les trois piliers définissent ce qu'il faut protéger, mais ils ne donnent pas d'ordre d'action. Le NIST CSF apporte cet ordre : la chaîne *identification → détection → confinement → restauration*, augmentée dans le cours de la phase « résister » et de l'amélioration continue.
+
+L'articulation se lit bien dans le tableau. Un contrôle de confidentialité comme le MFA sert la fonction *Protéger*, mais il ne produit aucun résultat tant que la fonction *Détecter* n'est pas en place pour voir ce qui échoue. De même, le PCA et le PRA ne sont utiles que parce qu'ils s'appuient sur une détection qui a identifié ce qui était réellement compromis.
+
+## Références
+
+- slides-intro.pdf, p. 10 (triade CIA), p. 20 (méthodologies : ISO 27005, NIST CSF, EBIOS RM, Open FAIR, NIST SP 800-30).
+- slides-intro.pdf, p. 32 (activité 6, énoncé).
+- NIST Cybersecurity Framework 2.0.
+
+## Utilisation IA
+
+Mise en tableau du contenu du cahier Word et des cinq fonctions du NIST CSF.

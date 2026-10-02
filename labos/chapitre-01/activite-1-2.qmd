@@ -1,29 +1,93 @@
 ---
-title: "Activité 1.2 — [Titre de l'activité]"
-date: "AAAA-MM-JJ"
+title: "Activité 2"
+subtitle: "Recommandations d'organismes de sécurité"
+date: "2026-10-02"
 ---
-
-<!--
-  MODÈLE D'ACTIVITÉ (version courte) — même structure que activite-1-1,
-  adaptée aux activités plus simples.
--->
 
 ## Objectifs
 
-- *[Objectif 1]*
+Résumer et référencer des recommandations de l'OFCS ou d'autres organismes similaires concernant le phishing, le ransomware, les DDoS, les data leaks et les supply chains, ainsi que les menaces particulières de l'écosystème open source et de Microsoft Exchange.
 
-## Procédure
+Le cadre réglementaire suisse ajoute deux contraintes à ces recommandations : l'obligation de signalement des cyberattaques à l'OFCS pour les infrastructures critiques, et l'obligation de respecter des standards minimaux (nLPD pour la responsabilité du traitement de données, RGPD pour le privacy by design).
 
-1. *[Étape 1]*
-2. *[Étape 2]*
-3. *[Étape 3]*
+## Identification des métiers pertinents
 
-## Observations
+- Analyste sécurité / analyste threat intelligence.
+- Responsable de la sécurité (RSSI/CISO), garant de l'alignement sur ces recommandations.
+- Consultant en sécurité, qui applique ces référentiels chez les clients.
+- Analyste SOC, en première ligne sur le phishing et le ransomware.
 
-| # | Point contrôlé | Résultat attendu | Résultat obtenu | Conforme |
-|---|---|---|---|---|
-| 1 | | | | |
+## Déroulement
 
-## Conclusion
+Je pars des recommandations publiques de l'OFCS et d'organismes équivalents (NCSC, CISA, ENISA) et je les regroupe par type de menace.
 
-*[Bilan en quelques lignes.]*
+## Résultats
+
+#### Phishing
+
+| Mesure | Contenu |
+|---|---|
+| MFA | Mettre en place une authentification forte contre le phishing |
+| Filtrage des flux | Filtrer à l'aide des protocoles d'authentification des courriels (SPF, DKIM, DMARC) |
+| Sensibilisation | Sensibiliser les collaborateurs régulièrement |
+
+#### Ransomware
+
+| Mesure | Contenu |
+|---|---|
+| Back-up offline | Règle du 3-2-1 : 3 sauvegardes, 2 supports différents, 1 hors ligne |
+| Moindre privilège | Restreindre l'usage des comptes admin et retirer les droits admin aux utilisateurs |
+| Isolation | Isoler les systèmes du réseau infecté |
+
+#### DDoS
+
+| Mesure | Contenu |
+|---|---|
+| Filtrage | Contacter des services de mitigation pour absorber les volumes d'attaque |
+| PCA | Documenter les procédures de basculement vers des infrastructures secondaires |
+| Surveillance | Monitorer le trafic réseau pour détecter les anomalies |
+
+#### Data leaks
+
+| Mesure | Contenu |
+|---|---|
+| Chiffrement | Chiffrer les données |
+| DLP | Implémenter une solution Data Loss Prevention et appliquer des règles de gouvernance de données strictes |
+| Conformité | Prévoir une procédure d'annonce aux autorités de protection des données |
+
+#### Supply chain
+
+| Mesure | Contenu |
+|---|---|
+| Évaluation des tiers | Réaliser des audits de sécurité (prestataires, sous-traitants, fournisseurs applicatifs) |
+| SBOM | Documenter les composants tiers et bibliothèques intégrés dans les outils internes |
+| Gestion des accès | Restreindre les accès distants avec des sessions temporaires et enregistrées |
+
+#### Écosystème open source (OSS)
+
+| Risque | Description |
+|---|---|
+| Dépendances transitives | Attaques de type *dependency confusion* et *typosquatting* sur les dépôts publics |
+| Vulnérabilité | Empoisonnement de la chaîne de compilation |
+| Bus factor | Risque lié au manque de maintenance des librairies critiques générées par les contributeurs |
+
+#### Microsoft Exchange
+
+| Risque | Description |
+|---|---|
+| APT | Découverte régulière de chaînes d'exploitation *zero-day* |
+
+## Interprétation des résultats
+
+Le point commun de toutes ces recommandations est qu'elles combinent une mesure technique et une mesure humaine : le MFA sans sensibilisation reste perméable, la sensibilisation sans MFA laisse passer un mot de passe volé.
+
+## Références
+
+- slides-intro.pdf, p. 12 et 13 (cadre réglementaire : RGPD, nLPD, obligations OFCS, CRA).
+- slides-intro.pdf, p. 14 (SBOM et SCA pour la sécurisation de la supply chain).
+- slides-intro.pdf, p. 17 (activité 2, énoncé).
+- <https://www.bacs.admin.ch/fr> (OFCS).
+
+## Utilisation IA
+
+Mise en tableau des listes à puces du cahier Word, ajout des précisions réglementaires issues des slides (signalement OFCS, nLPD, RGPD), aide à la reformulation et correction orthographique.

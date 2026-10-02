@@ -1,0 +1,233 @@
+---
+title: "Étude de cas 2022"
+subtitle: "L'attaque de l'école HE-Arc"
+date: "2026-10-02"
+---
+
+Notes prises pendant l'intervention de Pascal Linder, chargé de sécurité à la HE-Arc
+(1 h 30, hors intervention).
+
+::: {.callout-note}
+## Portée du document
+
+La chronologie ci-dessous est reconstituée de mémoire à partir d'une intervention
+orale. Elle n'est pas sourcée et les dates sont indicatives. Aucun nom d'acteur
+n'est confirmé : « Eternity Team » est le nom sous lequel le groupe est cité
+lors de l'intervention, ce n'est pas une attribution.
+:::
+
+## 1. Contexte
+
+La HE-Arc gère environ 157 serveurs virtuels, 1000 postes de travail et 3500
+comptes. Les comptes à privilèges sont peu nombreux, mais leur compromission a
+été suffisante.
+
+## 2. Vocabulaire
+
+| Terme | Définition |
+|---|---|
+| **Eternity Team** | Groupe criminel cité pendant l'intervention, actif comme modèle de malware-as-a-service |
+| **Compte à privilèges** | Compte disposant de droits élevés sur un système ou un service ; sa compromission donne un accès transversal |
+| **Priorité de mise en place de service** | Ordre dans lequel les services sont rétablis, arbitré entre criticité métier et dépendance technique |
+| **EDR** | *Endpoint Detection and Response*. Surveille un poste ou un serveur (processus, comportements suspects) et peut réagir localement : isoler la machine, arrêter un processus |
+| **MFA** | *Multi-Factor Authentication*. Authentification exigeant plusieurs facteurs de preuve indépendants |
+| **Attaque par opportunité** | Attaque menée sans cible identifiée, profitant d'une faille exposée |
+| **PIM** | *Privileged Identity Management*. Gère le cycle de vie des identités à privilèges : création, élévation, expiration |
+| **PAM** | *Privileged Access Management*. Composant par lequel les administrateurs doivent obligatoirement passer pour accéder aux serveurs critiques, avec traçabilité et session enregistrée |
+| **SOC** | *Security Operations Center*. Équipe et plateforme chargées de la supervision, de la détection et de la qualification des alertes |
+| **NCSC** | *National Cyber Security Center*. Centre national de cybersécurité, à distinguer de l'OFCS pour la Suisse |
+
+## 3. Chronologie de l'attaque
+
+La convention de lecture : **rouge** = action de l'attaquant, **vert** = action de
+détection de l'école.
+
+| Date | Délai | Attaquant (rouge) | École (vert) |
+|---|---|---|---|
+| 9 juin | J+0 | Un utilisateur cherche une licence gratuite pour un logiciel payant et télécharge un malware (RedSkiller) | — |
+| 10 juin | J+1 | | Notification de l'hébergeur. Changement du mot de passe, mais pas de tous les autres comptes : les attaquants ont obtenu l'accès des autres comptes |
+| 13 juin | J+4 | Première connexion VPN | — |
+| 17 juin | J+8 | Scan de ports | — |
+| 23 juin | J+14 | Mouvement latéral | — |
+| 27 juin | J+18 | Connexion au serveur SQL | Le service automatisé tombe |
+| 28 juin | J+19 | Connexion au serveur Exchange | — |
+| 29-30 juin | J+20-21 | Dump AD, export de données depuis le serveur Exchange | Grosse suspicion, consultation des logs. Le service tombe à cause d'un scan de port avec un compte à privilège (on essaie de savoir à qui il appartient). Alertes EDR |
+| 1 juillet (vendredi) | J+22 | Export de données | Vérification du compte à privilège : intrusion confirmée. Service VPN coupé. Alertes EDR |
+| 4 juillet (lundi) | J+25 | Mail de rançon : l'attaquant prouve son attaque (envoi de fichiers pris) et annonce ses intentions, chiffrement et divulgation de 2 To de données | Information du NCSC, de SWITCH-CERT. Audit. Attaque confirmée |
+| 5 juillet | J+26 | — | Séance de crise, collecte des logs, contacts police pour déposer plainte |
+
+Le point saillant est le délai de 22 jours entre l'intrusion initiale et la
+confirmation.
+
+## 4. Réponse à la crise
+
+**Isoler le réseau.** Coupure des services publiés et de la connexion internet
+(DMZ, web).
+
+**Mettre en place la cellule de crise**, réunissant le service informatique, la
+direction, la communication (SWITCH) et la police.
+
+**Contacter les partenaires pour les aider dans la crise.**
+
+- SWITCH : aide sur les choix à faire selon les critères.
+- Autre partenaire : aide à la revue des logs.
+
+**Déterminer les moyens de communication internes.**
+
+**Déterminer la gestion médiatique**, en filtrant les informations techniques à
+communiquer.
+
+**Collecte technique**, avec la règle de sauvegarde 3-2-1. Premiers réflexes :
+
+- sauvegarde sur support externe ;
+- rediscussion et modification des priorités de remise en état des services ;
+- migration de la messagerie vers le cloud, pour la communication entre le SI et la direction ;
+- étude de reconstruction d'un domaine informatique ;
+- mise en place d'outils de sécurité additionnels pour le suivi de l'attaque (EDR, filtre DNS).
+
+## 5. Conséquences et exposition
+
+**Reprise technique.** Réinstallation de tous les systèmes d'exploitation et de
+tous les serveurs, puis importation des sauvegardes antérieures à l'attaque.
+
+**Comptes.** Tous les comptes et objets machines ont été désactivés. Les comptes
+de service ont été réinitialisés, ce qui a posé la question de demander aux
+utilisateurs de réinitialiser leurs mots de passe. La solution retenue a été
+d'utiliser les médias, mais cela a supposé de contacter tout le monde, étudiants
+et enseignants étant en vacances, avec un effectif réduit.
+
+**Formation.** Un programme de formation a été mis en place pour les utilisateurs
+et le personnel sur les nouvelles technologies.
+
+**Finalité judiciaire de l'intrusion.**
+
+- Export de données, sans possibilité d'identifier lesquelles.
+- Suivi des IP et des connexions VPN, pour situer la destination des données (serveur en Allemagne). Impossible de savoir si elles ont transité plus loin, ni si le repatriement en Suisse a été analysé : constat de plusieurs attaques présentes sur le serveur.
+- Déclaration police et FedPol.
+- Analyse de disque, avec un manque de retour d'informations.
+- Absence d'encryption et absence de publication, contrairement à ce que l'attaquant avait prévu.
+
+## 6. Mesures correctives
+
+### Techniques
+
+- Même si quelque chose de privé semble étrange, il faut en tenir informé l'école ou l'entreprise. Idem en cas de perte de smartphone ou d'ordinateur.
+- Déplacement de certains services dans le cloud (messagerie, dossier personnel, impression, MFA).
+- On-permission / cloud : limiter la synchronisation des comptes, séparer les comptes à privilèges pour permettre une différenciation.
+- Mise en place d'une gestion des accès à privilèges (PIM et PAM).
+- Déploiement d'un EDR aussi sur les serveurs, qui n'était auparavant que sur les postes.
+- Limitation de l'accès à internet, par zone.
+- Engagement d'un [EPT ?] dédié à la sécurité.
+
+### Utilisateurs
+
+- Limitation des accès VPN par zones géographiques : tout fermer par défaut et pouvoir autoriser ensuite. Cette mesure a été abandonnée.
+- Implémentation d'un filtre DNS (Cisco Umbrella).
+- Limitation des postes de travail dans le domaine AD, au profit d'Intune. Les PC étudiants y étaient, ils n'y sont plus ; Intune permet de proposer des applications.
+- Séparation de la zone dédiée aux étudiant-e-s (services).
+- Mise en place du SSPR (*Self-Service Password Reset*) avec multi-facteurs.
+- Retrait des droits administrateurs locaux sur les postes de travail.
+- Bandeau d'avertissement sur les mails externes : c'est peu, et il y a encore trop de phishing.
+- Modification de la formation des utilisateurs-trices, y compris à l'accueil du personnel et des étudiant-e-s et dans la newsletter informatique :
+  - la formation est fortement conseillée mais pas obligatoire, ce qui ne suffit pas ;
+  - cours spécifiques selon les départements.
+
+## 7. Conclusions
+
+- Antivirus, mises à jour, séparation des réseaux, sauvegarde immuable, pare-feu de nouvelle génération.
+- L'erreur humaine est impossible à supprimer.
+- Utilisation du MFA partout.
+- Informer les utilisateurs-trices, les former, les faire remonter l'information.
+- Appeler à l'aide et utiliser les services offerts (NCSC, SWITCH, partenaires, police).
+- Prévoir une procédure de crise qui inclut la direction et pas seulement le SI, et qui tient compte de l'ampleur de l'attaque et de la période.
+- La vigilance des collaborateurs du SI et le fait qu'ils discutent entre eux.
+
+## 8. Et si c'était à refaire
+
+**Former les utilisateurs-trices et le service informatique ne suffit pas.**
+
+- Test d'intrusion, puis corrections.
+- Tester et informer régulièrement les utilisateurs-trices.
+- Tester une cyberattaque de la même manière qu'un test d'évacuation en cas d'incendie.
+
+**Procédure en cas d'attaque.**
+
+- Priorités selon le calendrier, et définir qui fait quoi.
+- Contacts (NCSC, partenaires).
+- Identifier les personnes ou entreprises à informer, en particulier les partenaires ou entreprises disposant d'un accès privilégié à un service de l'infrastructure.
+
+**Outil de communication** pour la gestion de crise et les utilisateurs-trices, le personnel n'étant pas présent à 100 %.
+
+**Documentation disponible hors ligne** et gestionnaire de mot de passe accessible, mais à jour.
+
+**Prévenir plutôt que guérir** : ne pas hésiter à stopper un service temporairement.
+
+**Cellule de crise à créer avant.**
+
+**Impliquer la direction dans les choix stratégiques** liés à l'information, dès le départ.
+
+**Débriefing** sur les événements de sécurité, pour permettre à tous les acteurs de comprendre, apprendre, partager leur vécu et améliorer un prochain événement.
+
+**Améliorer la surveillance du système informatique.**
+
+## 9. Récapitulatif et recul
+
+### Quatre thèmes
+
+**Un vecteur initial trivial.** Un utilisateur cherchait une licence gratuite, a
+téléchargé un malware. Aucune vulnérabilité zero-day n'a été nécessaire, et
+aucune compétence technique chez l'attaquant.
+
+**22 jours de latence de détection.** L'intrusion commence le 9 juin, la
+confirmation le 1er juillet. Sur cette période, les attaquants ont eu le temps
+d'installer la persistance, de faire du mouvement latéral et d'exfiltrer. La
+première détection réelle est la notification de l'hébergeur le 10 juin, qui
+n'a pas été traitée comme urgente.
+
+**Une réponse qui a tenu grâce à l'externalisation, pas aux moyens internes.**
+La réaction de l'école s'appuie sur SWITCH, le NCSC, la police et un partenaire
+privé pour la revue des logs. La cellule de crise et la décision de couper le
+VPN ont été rapides une fois l'intrusion confirmée.
+
+**Une fenêtre d'exposition jamais maîtrisée.** L'export de 2 To de données est
+le point aveugle : personne ne sait quelles données sont parties, ni si elles
+ont transité au-delà du serveur en Allemagne.
+
+### À approfondir
+
+- Le fonctionnement de l'EDR en profondeur : c'est l'outil qui a donné les
+  alertes décisives, et son déploiement était partiel.
+- La gestion de crise, vécue ici mais pas pratiquée en amont.
+- Le modèle PAM, qui répond directement à la cause de l'escalade.
+
+### Que faut-il absolument réussir dans une entreprise
+
+La détection. Dans ce récit, les mesures de sécurité ont plutôt bien tenu :
+pas de publication publique, pas de chiffrement malgré l'absence
+d'encryption des données sur les serveurs. Ce qui a échoué, c'est la
+détection. Le délai de 22 jours a coûté plus cher que n'importe quelle mesure
+de prévention manquante. C'est le même ordre que la fonction Détecter du
+NIST CSF, et la hiérarchie d'investissement devrait suivre.
+
+### Recul critique
+
+**La contradiction sur la formation.** Les notes concluent à la fois que
+« l'erreur humaine est impossible à supprimer » et que « former les
+utilisateurs-trices et le service informatique ne suffit pas ». Ce sont deux
+thèses différentes. La seconde est la bonne, et c'est celle que le cas
+illustre : l'utilisateur qui télécharge le malware n'est pas un utilisateur
+mal formé, il fait une chose qui lui paraît normale dans un contexte où le
+logiciel est cher.
+
+**La tension entre sécurité et continuité.** L'école ne pouvait se permettre de
+manquer une reprise d'année, ce qui l'obligeait à sécuriser les anciens comme
+les nouveaux comptes. Réinstaller tous les systèmes est la mesure la plus
+sûre et la plus coûteuse. Les mesures correctives proposées ici vont dans le
+sens inverse : limiter la surface plutôt que reconstruire. Il y a là un arbitrage
+que le cas ne tranche pas.
+
+**La contrainte du comportement.** Une partie des mesures proposées (bandeau
+d'avertissement, restriction géographique du VPN, droits admin retirés) revient à
+contraindre le comportement de l'utilisateur plutôt qu'à le comprendre. La
+restriction géographique du VPN a d'ailleurs été abandonnée en cours de route,
+ce qui suggère qu'elle gênait plus qu'elle ne protégeait.

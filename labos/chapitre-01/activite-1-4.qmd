@@ -1,0 +1,69 @@
+---
+title: "Activité 4"
+subtitle: "Limiter les risques de prise de décision"
+date: "2026-10-02"
+---
+
+## Objectifs
+
+1. Lister les risques et biais cognitifs liés au cerveau, et indiquer ce qu'on peut faire pour limiter chacun. Donner des pistes spécifiques et des stratégies générales.
+2. Des risques peuvent-ils aussi être liés à une personne particulière ou à une culture donnée ? Comment les réduire ?
+
+## Identification des métiers pertinents
+
+- Responsable de la sécurité (RSSI/CISO), qui arbitre sous incertitude.
+- Analyste risque / GRC, dont le travail dépend directement de la qualité des jugements.
+- Chef de projet ou product owner, qui décide sous contrainte de temps.
+- Responsable RH ou manager, exposés aux biais de conformité et de groupe.
+
+## Déroulement
+
+Je liste d'abord les risques cognitifs, puis j'élargis à ce qui dépend de l'individu et du contexte culturel.
+
+## Résultats
+
+### Risques cognitifs
+
+| Type | Comment limiter le risque | Pistes |
+|---|---|---|
+| Déclin cognitif (âge) et pathologies neurodégénératives | Cultiver les intérêts | Activité intellectuelle continue, vie sociale active, régime alimentaire adapté au cerveau |
+| Surcharge cognitive et fatigue mentale | Garantir un sommeil de qualité | Technique Pomodoro, activités mono-tâches, outils pour décharger la mémoire immédiate |
+| Biais cognitifs et erreurs de jugement | Exercices respiratoires | Remise en question de sujets divers, solliciter des avis contradictoires (méthode des 3 chaises), passer d'une réflexion intuitive à un raisonnement analytique |
+| Déficit attentionnel et « brain fog » | Pratiquer du sport | Limiter les réseaux sociaux, consulter un professionnel, mettre en pratique des exercices d'attention focalisée |
+
+### Risques liés à une personne
+
+Les risques cognitifs ne sont pas uniquement biologiques : ils dépendent aussi de l'histoire individuelle et du contexte culturel.
+
+- **Biais de vulnérabilité émotionnelle.** Une personne traumatisée, dépressive ou anxieuse voit ses fonctions exécutives (mémoire de travail, flexibilité mentale) diminuées par saturation des ressources attentionnelles.
+  À réduire : suivi psychologique ou TCC pour restructurer les schémas anxieux, et régulation émotionnelle guidée (cohérence cardiaque, journal de bord).
+- **Facteurs génétiques et hygiène de vie.** Les prédispositions (par exemple l'allèle ApoE4) ou les mauvaises habitudes (sédentarité, tabagisme) accélèrent le déclin cognitif.
+  À réduire : bilan de santé préventif régulier (marqueurs cardiovasculaires, sommeil) et stimulation cognitive personnalisée selon les centres d'intérêt.
+
+### Risques liés à une culture
+
+La culture façonne notre manière de traiter l'information et de décider.
+
+- **Biais de conformité et pensée de groupe.** Dans les cultures à fort collectivisme ou à forte distance hiérarchique, la pression sociale pousse à l'alignement, ce qui inhibe la pensée critique et augmente les erreurs collectives.
+  À réduire : sécurité psychologique dans les équipes (remise en question sans crainte) et avocat du diable systématique en décision stratégique.
+- **Biais de cadrage culturel.** Chaque culture privilégie certaines informations au détriment d'autres (par exemple les gains à court terme face à la vision à long terme), ce qui crée un aveuglement face aux menaces non alignées sur les valeurs dominantes.
+  À réduire : diversité dans les groupes de réflexion et exercices de *pre-mortem* (imaginer un échec et analyser les causes culturelles) ce qui permet de mettre en place une amélioration continue solide.
+- **Normes de surmenage.** Certaines cultures valorisent le manque de sommeil et la charge de travail extrême, ce qui accélère la fatigue cognitive et le burnout collectif.
+  À réduire : droit à la déconnexion explicite et valorisation de l'efficacité plutôt que des heures passées devant un écran.
+
+## Interprétation des résultats
+
+Ainsi, il peut y avoir des norme et standards qui permmettent de corriger la rationalisation a posteriori mais pas le jugement.
+
+Écrire les critères **avant** de décider oblige à justifier le choix par des critères acceptés d'avance, et non à déplacer le critère après coup pour appuyer une préférence déjà prise. C'est la logique du *pre-mortem* et du pré-enregistrement d'un essai clinique. La méthode apporte en plus deux choses qu'un avis isolé n'apporte pas : la **reproductibilité** (deux personnes qui appliquent le même référentiel sur le même périmètre convergent) et la **traçabilité** (ISO 27005 impose d'identifier, d'analyser,
+d'évaluer puis de traiter, ce qui permet de rejouer et de contester la décision).
+
+## Références
+
+- slides-intro.pdf, p. 26 à 29 (prise de décision, biais cognitifs, biais sociaux W.E.I.R.D., systèmes psychologiques de Haidt et ses *foundations*).
+- Kahneman, *Thinking, Fast and Slow*.
+- Haidt, *The Righteous Mind*.
+
+## Utilisation IA
+
+Mise en tableau de la liste des risques cognitifs, mise en forme de la section sur les risques individuels et culturels.

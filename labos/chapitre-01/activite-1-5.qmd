@@ -1,0 +1,61 @@
+---
+title: "Activité 5"
+subtitle: "Définir le vocabulaire de base de la cybersécurité"
+date: "2026-10-02"
+---
+
+## Objectifs
+
+1. Consulter un lexique en ligne de la cybersécurité et en sortir les concepts et définitions que je ne connaissais pas encore, dans les grandes lignes.
+2. Définir ensuite les termes suivants : *red team*, *blue team*, *purple team*.
+
+## Identification des métiers pertinents
+
+- Analyste SOC et analyste réponse à incident, pour la partie *blue team*.
+- Pentester et membre d'une *red team*.
+- Chef de projet sécurité ou architecte, qui fait le lien entre les deux (*purple team*).
+- Formateur à la sensibilisation, pour le vocabulaire destiné aux non-spécialistes.
+
+## Déroulement
+
+Je commence par le lexique en ligne, je retiens les termes qui m'étaient inconnus, puis je traite le cas particulier des trois équipes.
+
+## Résultats
+
+### Partie 1 : termes rencontrés dans le lexique
+
+| Nom | Définition |
+|---|---|
+| Zero-Day | Faiblesse logicielle non encore connue du fabricant ou du public, pour laquelle aucun correctif (patch) n'existe |
+| Typosquatting | Consiste à enregistrer un nom de package ou de domaine très proche d'un vrai pour inciter au téléchargement malveillant |
+| Quishing et Smishing | Dérivés du phishing (hameçonnage). Le quishing exploite de faux codes QR, le smishing passe par des SMS malveillants |
+| Security Orchestration, Automation and Response | Outil permettant d'automatiser les réponses aux incidents de sécurité |
+| Privileged Access Management | Composant applicatif sécurisé par lequel doivent obligatoirement passer les administrateurs informatiques pour accéder aux serveurs critiques |
+| Air-Gap | Mesure de sécurité physique isolant complètement un ordinateur ou un réseau informatique d'Internet et de tout autre réseau non sécurisé |
+| Indicators of Compromise | Éléments techniques (adresses IP, empreintes numériques SHA256 de fichiers, clés de registre) prouvant qu'un système a été compromis |
+| Indicators of Attack | Indices comportementaux indiquant qu'une attaque est en cours d'exécution, indépendamment des outils utilisés |
+| Kill Chain | Modèle décrivant les différentes étapes successives d'une cyberattaque, de la reconnaissance initiale jusqu'à l'exfiltration ou au chiffrement des données |
+
+### Partie 2 : les trois équipes
+
+| Nom | Définition |
+|---|---|
+| Red team (équipe offensive) | La Red Team regroupe les experts en sécurité chargés de simuler le comportement d'un cyberattaquant réel (groupe criminel, espion) |
+| Blue team (équipe défensive) | La Blue Team rassemble l'ensemble des professionnels chargés de défendre l'organisation au quotidien et de maintenir la posture de sécurité. Elle comprend généralement les analystes SOC, les administrateurs système et réseau et les équipes d'intervention sur incident (CSIRT) |
+| Purple team (synergie offensive et défensive) | La Purple Team n'est pas toujours une équipe permanente, mais plutôt une fonction d'optimisation ou un mode de travail collaboratif entre la Red Team et la Blue Team |
+
+## Interprétation des résultats
+
+La distinction utile est celle entre IoC et IoA. Un IoC est une trace (une IP, une empreinte), donc une preuve presque directe mais facile à contourner. Un IoA est un comportement observé, donc plus difficile à tromper et plus utile pour la détection.
+
+Sur les trois équipes, la Purple Team n'apporte pas de nouvelles compétences, c'est un mode de travail : sans transfert de savoir-faire entre offensive et défensive, une Red Team produit des findings que personne n'exploite et une Blue Team corrige sans savoir ce qu'elle va rejouer.
+
+## Références
+
+- Lexique de la cybersécurité, <https://guardia.school/boite-a-outils/lexique-de-la-cybersecurite.html> (référencé dans les slides, p. 32).
+- slides-intro.pdf, p. 32 (activité 5, énoncé).
+- slides-intro.pdf, p. 23 (IoC, cycle de gestion d'incident).
+
+## Utilisation IA
+
+Recherche et reformulation des définitions à partir du lexique cité dans les slides, mise en tableau des deux parties du cahier Word.

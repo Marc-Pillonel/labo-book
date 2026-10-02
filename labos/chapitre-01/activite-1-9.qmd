@@ -1,0 +1,110 @@
+---
+title: "Activité 9"
+subtitle: "Concevoir, Valider et Opérer au niveau entreprise"
+date: "2026-10-02"
+---
+
+## Objectifs
+
+Donner quelques pistes, dans le cas d'une entreprise et non d'un projet spécifique, sur les activités à exécuter dans les trois étapes Concevoir, Valider et Opérer du modèle conceptuel, et sur les liens spécifiques d'amélioration continue entre elles.
+
+Le modèle de référence est celui du cours : Gouverner → Concevoir → Réaliser → Valider → Déployer → Opérer → Améliorer. On s'arrête aux trois étapes demandées, le reste servant de contexte.
+
+## Identification des métiers pertinents
+
+Les trois étapes ne relèvent pas des mêmes métiers. Le RSSI/CISO porte Concevoir et Améliorer et garantit le passage entre les trois. Le GRC Analyst cadre l'analyse de risques et la conformité. L'auditeur intervient à l'étape Valider. L'architecte sécurité et le Security Engineer produisent les mesures de conception. Blue Team et Purple Team portent l'opération quotidienne et le retour d'expérience, et le responsable de la conformité garantit les exigences réglementaires (RGPD, NIS2, OFCS).
+
+## Déroulement
+
+Je parcours les trois étapes dans l'ordre du modèle et, pour chacune, je liste les activités types au niveau de l'entreprise. Je termine par les liens d'amélioration continue, c'est-à-dire par ce qui fait passer l'information d'une étape à l'autre.
+
+## Résultats
+
+### Concevoir
+
+Concevoir, au niveau entreprise, revient à décider de ce que l'on protège et avec quel budget, puis à en faire une règle écrite. Ce n'est pas une tâche de développement, c'est un acte de gouvernance.
+
+| Activité | Contenu |
+|---|---|
+| Cadrer le contexte | Identifier le périmètre (sites, systèmes, données, tiers) et le cadre applicable : obligations légales, normes sectorielles, référentiels |
+| Établir l'état des lieux | Audit de maturité avec une méthode reconnue, questionnaire aux métiers, mesure des écarts de conformité et de robustesse |
+| Analyser les risques | Scénarios de risque à partir des valeurs métier et des événements redoutés ; au niveau technique, une liste structurée de menaces type STRIDE-LM |
+| Hiérarchiser | Matrice de criticité : vraisemblance et impact. On ne traite pas tout de la même façon |
+| Traiter | Pour chaque risque : éviter, réduire, transférer ou accepter. Accepter suppose d'avoir défini ce qu'est un risque acceptable |
+| Formaliser | Rédiger la politique de sécurité (PSSI) : règles intemporelles, objectifs, exigences, organisation |
+| Obtenir l'engagement | La direction valide et alloue les ressources. Sans cet engagement, le reste reste une intention |
+
+Le NIST CSF 2.0 relie ces activités : sa fonction Govern donne le cadre de direction, de priorisation et de suivi des cinq autres fonctions. La PSSI est le document qui matérialise ce cadre.
+
+Un point mérite d'être signalé, parce qu'il est contre-intuitif : la liste détaillée des vulnérabilités ne figure pas dans la PSSI. Elle y est référencée par identifiant, sans détail, à la fois pour éviter l'obsolescence rapide du document et pour ne pas livrer à l'attaquant la liste des failles recensées.
+
+### Valider
+
+Valider, c'est vérifier que ce qui a été conçu fonctionne et que les mesures sont vraiment en place avant de s'en appuyer.
+
+| Activité | Contenu |
+|---|---|
+| Tester techniquement | Tests d'intrusion, scan de vulnérabilités, vérification des correctifs, tests de restauration des sauvegardes |
+| Collecter les preuves | Un contrôle non documenté est un contrôle inauditable. Il faut pouvoir démontrer sur pièces |
+| Auditer la conformité | Écart entre ce que la PSSI exige et ce qui est réellement appliqué |
+| Organiser un retour d'attaque | Exercices de simulation, *tabletop exercises* : valider le plan de réponse, pas seulement le matériel |
+| Décider et suivre | Go / no-go, puis traitement des écarts et planification de leur correction |
+
+La distinction entre conforme et auditable est utile ici. On peut être conforme sur le papier et peu auditable si les preuves sont insuffisantes. On peut aussi être très facilement auditable sans être conforme, si les activités sont tracées sans respecter l'exigence.
+
+L'ordre est important : la validation précède le déploiement. Un test de restauration des sauvegardes fait partie de la validation, parce que la capacité de restauration est une exigence de continuité. La découvrir après l'incident, c'est découvrir qu'on n'a pas de PCA.
+
+### Opérer
+
+Opérer, c'est le quotidien de la sécurité : la surveillance, la détection, la réaction et la production des données qui alimenteront l'amélioration continue.
+
+| Activité | Contenu |
+|---|---|
+| Superviser | Collecte centralisée des journaux, EDR sur les postes et serveurs, agents réseau |
+| Détecter et qualifier | Corrélation et analyse des alertes, tri par priorité, qualification de l'incident |
+| Répondre | Détecter et signaler → analyser, qualifier et prioriser → alarmer → contenir et résister → éradiquer → récupérer → apprendre |
+| Assurer la continuité | Maintien du niveau de service, PCA, PRA, tests périodiques |
+| Gérer la semaine de sécurité | Mise à jour des correctifs, gestion des vulnérabilités en continu |
+| Sensibiliser | Formation continue, exercices de hameçonnage, mesure du taux de clic |
+| Rendre compte | Reporting de la posture et des indicateurs à la direction |
+
+La phase « apprendre » du cycle de réponse aux incidents est le point de contact avec l'amélioration continue. Sans retour d'expérience documenté, l'incident est subi puis oublié, et la prochaine occurrence du même scénario prendra exactement le même chemin.
+
+### Liens d'amélioration continue
+
+Chaque étape a une sortie vers l'étape suivante, et c'est là que la plupart des organisations perdent l'information.
+
+| Lien | Ce qui doit circuler | Rupture fréquente |
+|---|---|---|
+| Concevoir → Valider | Les exigences et les scénarios de risque qui justifient chaque mesure | On teste ce qui est techniquement testable, pas ce qui était prévu |
+| Valider → Opérer | Les écarts constatés, avec un propriétaire et une échéance | Le rapport d'audit reste un document, jamais une liste de tâches |
+| Opérer → Améliorer | Les incidents, les alertes, les indicateurs, les presque-incidents | On ne compte que les incidents avérés, on perd les signaux faibles |
+| Améliorer → Concevoir | La révision de la PSSI, de l'analyse de risques et des priorités | Le document est considéré comme définitif une fois signé |
+| Améliorer → Gouverner | Les indicateurs de performance et de maturité destinés à la direction | Le reporting est un rituel de remplissage, pas une aide à la décision |
+
+Le lien Opérer → Améliorer est le seul qui produise de l'information nouvelle ; les autres ne font que transmettre ce qui a déjà été décidé. Le lien Valider → Opérer cède si l'écart n'a ni propriétaire ni échéance : un audit produit un constat, pas une correction. Le lien Améliorer → Concevoir est celui qui manque le plus souvent. La PSSI est écrite une fois et jamais revue, alors qu'elle encode les règles d'usage sur lesquelles repose la détection, donc c'est le document qui devrait bouger le plus vite.
+
+## Interprétation des résultats
+
+Les trois étapes ne sont pas équivalentes en maturité. Valider est la plus codifiée, outillée par des normes et des outils. Concevoir dépend entièrement de l'engagement de la direction. Opérer est la plus sous-dotée en moyens alors qu'elle porte la charge quotidienne.
+
+Cette asymétrie se retrouve dans les organisations : des politiques de sécurité bien écrites (Concevoir), peu de preuves d'application (Valider), une détection qui décroche après quelques mois (Opérer). Le problème est celui de l'allocation de moyens.
+
+L'amélioration continue se joue sur quatre ordres de grandeur mesurables : la part de contrôles réellement couverts, le délai de correction d'un écart, le délai de détection moyen, et la part d'incidents qui aboutissent à un document de retour d'expérience. Ces quatre chiffres sont plus parlants pour une direction qu'un taux de conformité global, alors que les slides présentent l'amélioration continue comme une exigence de standards (ISO 27000, clauses 10.1 et 10.2).
+
+Tout le modèle repose enfin sur la fonction Opérer. Sans une équipe qui produit des alertes qualifiées et des retours d'expérience, Concevoir et Valider produisent des documents sans boucle de retour, et le modèle se réduit à une liste d'étapes.
+
+## Références
+
+- slides-intro.pdf, p. 36 (posture de sécurité et résilience : anticiper → résister → récupérer → s'adapter).
+- slides-intro.pdf, p. 37 et 38 (amélioration continue, PDCA, SSDLC, ISO/IEC 27000 clauses 10.1 et 10.2).
+- slides-intro.pdf, p. 39 (modèle conceptuel Gouverner → Concevoir → Réaliser → Valider → Déployer → Opérer → Améliorer ; activité 9).
+- slides-intro.pdf, p. 22 et 23 (cycle de gestion des incidents, PRA, PCA, SLA).
+- slides-intro.pdf, p. 24 (CIS Controls, IG1/IG2/IG3, échelles de maturité).
+- slides-intro.pdf, p. 42 (conformité et auditabilité, la distinction à ne pas confondre).
+- NIST Cybersecurity Framework 2.0, fonction Govern : <https://www.nist.gov/cyberframework>
+- ISO/IEC 27000:2022, clauses 10.1 et 10.2.
+
+## Utilisation IA
+
+Rédaction intégrale des sections « Résultats » et « Interprétation des résultats » à partir du modèle conceptuel des slides 1.11, 1.12 et 1.8, de la distinction conformité/auditabilité, et de la fonction Govern du NIST CSF 2.0. L'activité 9 ne figure pas dans le cahier Word : il n'y avait donc aucun contenu existant à reprendre. Les exemples d'outils et les ordres de grandeur sont présentés comme des pistes à valider selon le contexte de l'entreprise.
