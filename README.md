@@ -1,6 +1,6 @@
-# labo-book — Cahier de laboratoire (3275.1)
+# labo-book - Cahier de laboratoire (3275.1)
 
-Cahier de laboratoire du cours **3275.1 — Conception d'opérations de sécurité**,
+Cahier de laboratoire du cours **3275.1 - Conception d'opérations de sécurité**,
 rédigé en Markdown (Quarto), publié automatiquement sur GitHub Pages, avec
 relecture annotée en ligne.
 
@@ -14,7 +14,7 @@ relecture annotée en ligne.
 | Rédaction locale | Quarto (`.qmd` = Markdown + YAML), preview live |
 | Versionnement | Git / GitHub |
 | Déploiement | GitHub Action → GitHub Pages (à chaque *push* sur `main`) |
-| Annotations inline | Hypothesis (groupe privé `labo-book`) — surlignage + commentaire dans la marge |
+| Annotations inline | Hypothesis (groupe privé `labo-book`) - surlignage + commentaire dans la marge |
 
 ## Structure du dépôt
 
@@ -74,13 +74,13 @@ GitHub impose ce clic une fois par dépôt (l'API interdit l'activation via le
 2. Relancer le dernier run (onglet **Actions → ⋯ → Re-run all jobs**) ou
    pousser une modification : le site est déployé à chaque *push* sur `main`.
 
-### 2. Hypothesis (annotations dans le texte) — fait le 2026-09-29
+### 2. Hypothesis (annotations dans le texte) - fait le 2026-09-29
 
 1. Compte gratuit créé, **groupe privé** `labo-book` créé :
    <https://hypothes.is/groups/yR9P8X3a/labo-book>
 2. Annotation intégrées au site via `website.comments.hypothesis` (`_quarto.yml`).
 3. Reste à faire : **inviter le prof** sur le groupe et lui signaler qu'il doit
-   **sélectionner le groupe** dans la sidebar (par défaut « Public » — sinon
+   **sélectionner le groupe** dans la sidebar (par défaut « Public » - sinon
    ses annotations restent publiques et hors du groupe).
 
 > ⚠️ Le lien du groupe est public sur ce dépôt : quiconque le suit peut
@@ -89,7 +89,7 @@ GitHub impose ce clic une fois par dépôt (l'API interdit l'activation via le
 
 ## Notes d'exploitation
 
-- **Visibilité** : dépôt et site sont publics — tout le monde peut *lire* le
+- **Visibilité** : dépôt et site sont publics - tout le monde peut *lire* le
   cahier. Les annotations postées dans le groupe privé `labo-book` ne sont
   visibles que par ses membres (relecteur + auteur).
 - **Notifications** : emails Hypothesis pour les réponses/mentions ; pour les
