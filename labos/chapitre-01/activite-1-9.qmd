@@ -107,4 +107,4 @@ Tout le modèle repose enfin sur la fonction Opérer. Sans une équipe qui produ
 
 ## Utilisation IA
 
-Rédaction intégrale des sections « Résultats » et « Interprétation des résultats » à partir du modèle conceptuel des slides 1.11, 1.12 et 1.8, de la distinction conformité/auditabilité, et de la fonction Govern du NIST CSF 2.0. L'activité 9 ne figure pas dans le cahier Word : il n'y avait donc aucun contenu existant à reprendre. Les exemples d'outils et les ordres de grandeur sont présentés comme des pistes à valider selon le contexte de l'entreprise.
+Rédaction partiel avec l'IA pour ajouter des éléments, review orthographique et syntaxique.
