@@ -1,0 +1,54 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, Segoe UI, sans-serif","fontSize":"14px","lineColor":"#94a3b8"},"flowchart":{"curve":"basis","nodeSpacing":45,"rankSpacing":70,"padding":14}}}%%
+flowchart TB
+
+    subgraph CADRE["<b>Cadre de direction</b>"]
+        GOU["<b>1 · Gouvernance</b><br/>PSSI · audit de maturité<br/>analyse de risques"]
+    end
+
+    subgraph CYCLE["<b>Cycle de vie · SSDLC</b>"]
+        direction LR
+        CON["<b>2 · Conception</b><br/>exigences, architectures<br/>threat modeling"]
+        DEV["<b>3 · Développement</b><br/>codage sécurisé<br/>CI/CD · SAST · SCA"]
+        VAL["<b>4 · Validation</b><br/>DAST · pentests<br/>auditabilité"]
+        DEP["<b>5 · Déploiement</b><br/>hardening<br/>contrôle d'accès"]
+        CON --> DEV --> VAL --> DEP
+    end
+
+    subgraph EXPLOIT["<b>Exploitation</b>"]
+        OPE["<b>6 · Opération</b><br/>SIEM · EDR<br/>réponse à incident"]
+    end
+
+    subgraph PDCA["<b>Amélioration continue · PDCA</b>"]
+        direction LR
+        RETEX["<b>RETEX</b><br/>retours d'expérience"]
+        VEIL["<b>Veille</b><br/>technologique & sécurité"]
+        KPI["<b>Indicateurs</b><br/>couverture, délais"]
+    end
+
+    GOU -->|Décline les règles| CON
+    DEP -->|Exploite| OPE
+    OPE -->|Incidents, alertes, journaux| RETEX
+    OPE --> VEIL
+    OPE --> KPI
+
+    RETEX -.->|Révision de la PSSI| GOU
+    RETEX -.->|Exigences à revoir| CON
+    RETEX -.->|Tests de régression| DEV
+    RETEX -.->|Écarts à corriger| VAL
+    VEIL -.->|Menaces et réglementations| GOU
+    KPI -.->|Priorités et moyens| GOU
+
+    classDef cadre fill:#eef2ff,stroke:#4338ca,stroke-width:2px,color:#1e1b4b
+    classDef cycle fill:#ecfdf5,stroke:#047857,stroke-width:2px,color:#064e3b
+    classDef explo fill:#fff7ed,stroke:#c2410c,stroke-width:2px,color:#7c2d12
+    classDef boucle fill:#fdf4ff,stroke:#a21caf,stroke-width:2px,color:#701a75
+
+    class GOU cadre
+    class CON,DEV,VAL,DEP cycle
+    class OPE explo
+    class RETEX,VEIL,KPI boucle
+
+    style CADRE fill:#f8f9ff,stroke:#c7d2fe,stroke-width:1px,stroke-dasharray:4 4
+    style CYCLE fill:#f5fdf9,stroke:#a7f3d0,stroke-width:1px,stroke-dasharray:4 4
+    style EXPLOIT fill:#fffaf5,stroke:#fed7aa,stroke-width:1px,stroke-dasharray:4 4
+    style PDCA fill:#fdfaff,stroke:#f5d0fe,stroke-width:1px,stroke-dasharray:4 4
