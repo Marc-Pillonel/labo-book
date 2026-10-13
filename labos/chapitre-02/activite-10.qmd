@@ -1,0 +1,104 @@
+---
+title: "Activité 10"
+subtitle: "Qu'est-ce qui alimente la veille cybersécurité et technologique"
+date: "2026-10-09"
+---
+
+## Objectifs
+
+1. Recenser ce qui alimente la veille cybersécurité et technologique, en distinguant la veille technologique de la veille de sécurité.
+2. Montrer où cette information atterrit : dans la stratégie, puis dans la politique de sécurité du système d'information (PSSI).
+3. Décrire la structure type d'une PSSI et justifier ce qui en est volontairement exclu, en particulier l'audit de maturité et l'analyse des risques.
+
+## Identification des métiers pertinents
+
+- RSSI / CISO, qui pilote la veille, l'arbitrage et la rédaction de la PSSI.
+- Analyste veille / *threat intelligence*, qui collecte les menaces, vulnérabilités et tendances.
+- Chargé GRC, qui traduit la veille réglementaire et normative en exigences.
+- DPO et responsable conformité, qui suivent les obligations légales (LPD, RGPD, NIS2).
+- Architecte sécurité, qui intègre dans les architectures les évolutions technologiques retenues.
+
+## Déroulement
+
+Je commence par distinguer la veille technologique de la veille de sécurité, puis je recense les sources qui les alimentent. Je regarde ensuite où l'information atterrit, dans la stratégie puis dans la PSSI, ce qui m'amène à la structure type du document et à ce qu'on n'y met pas.
+
+## Résultats
+
+### Veille technologique et veille de sécurité
+
+Les deux veille ne visent pas le même objet.
+
+| Type de veille | Question posée | Ce que je suis |
+|---|---|---|
+| Technologique | Les évolutions techniques modifient-elles notre organisation, nos architectures et nos risques ? | Cloud et conteneurs, IA générative, matériel et firmware, protocoles, offres des éditeurs |
+| Sécurité | Quelles nouvelles menaces, vulnérabilités et obligations peuvent nous affecter ? | Nouvelles campagnes, vulnérabilités exploitées, évolutions réglementaires, techniques d'attaque |
+
+Une évolution technologique n'est pas un risque en soi. Certaines améliorent la sécurité, d'autres en créent. C'est l'analyse qui dit si on en profite ou si on s'en méfie.
+
+### Ce qui alimente la veille
+
+| Famille de sources | Exemples |
+|---|---|
+| Vulnérabilités et correctifs | NVD/CVE, CISA KEV, bulletins des éditeurs |
+| Menaces et acteurs | MITRE ATT&CK, *threat intelligence*, IOCTA d'Europol |
+| Alertes nationales | CERT-FR / ANSSI (FR), OFCS (CH) |
+| Cadre réglementaire et normatif | NIS2, LPD/RGPD, ISO/IEC 27001 et 27002, NIST CSF, CIS Controls, méthode MCSR de l'OFCS |
+| Recherche et communauté | Conférences techniques, *bug bounty*, listes de diffusion sectorielles |
+| Sources internes | SIEM, EDR, journaux, incidents et presque-incidents, résultats d'audit |
+
+### Où atterrit la veille
+
+La veille sert à garder la stratégie et la PSSI à jour. C'est un intrant, pas une fin.
+
+La PSSI est le document officiel, stratégique et sommital de l'entreprise. Elle définit des règles intemporelles, des objectifs et des exigences, et fixe l'organisation de la sécurité. Elle est produite suite à un état des lieux mené avec une méthode reconnue, l'audit de maturité.
+
+Le document se maintient par quatre gestes : communiquer, former, intégrer les tiers et mettre à jour. Le dernier est celui qui relie la veille à la PSSI.
+
+### Structure type d'une PSSI
+
+| # | Chapitre | Contenu |
+|---|---|---|
+| 1 | Introduction et objectifs | Objet, périmètre, buts |
+| 2 | Gouvernance et responsabilités | La direction valide et alloue les ressources ; le RSSI met en œuvre et pilote |
+| 3 | Engagement et vision de la direction | Objectifs stratégiques fixés par les dirigeants |
+| 4 | Périmètre d'application | Sites, services, données, systèmes, utilisateurs ; référentiels et contexte légal |
+| 5 | Rôles et responsabilités | Qui décide, qui applique et qui contrôle |
+| 6 | Classification des actifs | Criticité des données et du matériel à protéger |
+| 7 | Règles d'usage et contrôle d'accès | Mots de passe, accès distant, moindre privilège, habilitations |
+| 8 | Sécurité des équipements et usages | Poste de travail, télétravail, séparation des usages |
+| 9 | Gestion des incidents | Procédures, personnes à alerter, délais d'intervention |
+| 10 | Continuité et reprise d'activité | Sauvegardes, PRA et PCA |
+| 11 | Communication et formation | Formation des employés aux risques cyber |
+| 12 | Conformité réglementaire | Alignement avec les lois et normes (RGPD, NIS2, ISO 27001) |
+
+### Ce qui n'y figure pas
+
+| Élément | Rôle | Raison de l'exclusion |
+|---|---|---|
+| Audit de maturité | État des lieux selon une méthode reconnue, mesure des écarts au référentiel | Constat daté, et il exposerait les écarts constatés |
+| Analyse des risques | Scénarios, vraisemblance et impact, traitement des risques | Évolue en permanence et contient la liste des failles ; l'attaquant y aurait accès |
+
+Un état des lieux et une analyse des risques servent donc à écrire la PSSI sans y figurer. Chaque règle reste justifiée par un renvoi, par identifiant et sans détail, à un élément de l'analyse des risques.
+
+## Interprétation des résultats
+
+L'erreur la plus courante consiste à écrire une politique qui contient l'état des lieux, l'analyse des risques et les vulnérabilités. Le document devient obsolète à la première correction, et il donne à l'attaquant la carte de l'entreprise. Écarter ces deux documents repose sur la pérennité de la politique et sur la confidentialité de ce qu'elle contient.
+
+Le maillon faible reste la mise à jour. Une veille qui ne produit qu'un rapport ne change rien, et l'organisation continue d'appliquer une politique de trois ans. C'est le même point de rupture que celui que je relève en activité 9 sur le lien Améliorer → Concevoir.
+
+Ma préférence va aux sources internes quand elles existent : une alerte du SIEM ou un presque-incident parle de notre exposition, tandis que l'IOCTA ou le rapport de l'OFCS décrivent le marché dans son ensemble.
+
+## Références
+
+- slides-conception-entreprise.pdf, p. 50 (veille technologique et veille de sécurité ; exercices 29 et 30 ; activité 10).
+- slides-conception-entreprise.pdf, p. 51 à 53 (PSSI, acteurs, exclusion de l'audit de maturité ; exercices 31 et 32 ; structure d'une PSSI en 12 chapitres ; faire vivre la PSSI).
+- slides-conception-entreprise.pdf, p. 54 et 55 (analyse des risques, EBIOS RM et STRIDE-LM ; audit de maturité).
+- Référentiels : ISO/IEC 27001:2022 (SMSI), ISO/IEC 27002:2022 (bonnes pratiques), NIST CSF 2.0, <https://www.nist.gov/cyberframework> ; CIS Controls, <https://www.cisecurity.org/controls> ; méthode MCSR de l'OFCS.
+- OFCS, <https://www.ncsc.admin.ch/ncsc/fr/home.html> ; ANSSI / CERT-FR, <https://www.cert.ssi.gouv.fr>.
+- MITRE ATT&CK, <https://attack.mitre.org> ; Europol, *Internet Organised Crime Threat Assessment 2025* (IOCTA 2025).
+
+## Utilisation IA
+
+Reformulation des informations récolté personnellement, mise en place des tableau de la structure de la PSSI et des sources de veille.
+
+Demande de confirmation et correction sur certaines informations récolté.

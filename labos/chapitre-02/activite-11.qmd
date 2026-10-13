@@ -1,0 +1,32 @@
+---
+title: "Activité 11"
+subtitle: "Schéma général conception et opération de la sécurité"
+date: "2026-10-02"
+---
+
+
+## Objectifs
+En utilisant les concepts et les relations entre ces concepts vus principalement dans le chapitre (Chapitre 2 -Conception entreprise), décrivez les relations entre Gouvernance (y.c. comment aboutir à un PSSI), Conception, Développement, Validation, Déploiement et Opération de la sécurité.
+
+Le schéma devrait faire ressortir les principales étapdes, les relations et également les éléments d'amélioration continur.
+
+La partie Opération de la sécurité n'a pas besoin d'être détaillée (mais pensez tout de même à l'amélioration continue PDCA-SSDLC).
+
+Restez au niveau entreprise, à un haut niveau d'abstraction.
+
+## Identification des métiers pertinents
+
+
+## Déroulement
+
+
+## Résultats
+
+## Interprétation des résultats
+
+
+## Références
+
+
+## Utilisation IA
+
