@@ -1,6 +1,7 @@
 ---
 title: "Activité 11"
 subtitle: "Schéma général conception et opération de la sécurité"
+
 date: "2026-10-13"
 ---
 

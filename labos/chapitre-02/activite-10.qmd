@@ -1,6 +1,7 @@
 ---
 title: "Activité 10"
 subtitle: "Qu'est-ce qui alimente la veille cybersécurité et technologique"
+
 date: "2026-10-09"
 ---
 
@@ -102,3 +103,22 @@ Ma préférence va aux sources internes quand elles existent : une alerte du SIE
 Reformulation des informations récolté personnellement, mise en place des tableau de la structure de la PSSI et des sources de veille.
 
 Demande de confirmation et correction sur certaines informations récolté.
+=======
+
+## Identification des métiers pertinents
+
+
+## Déroulement
+
+
+## Résultats
+
+## Interprétation des résultats
+
+
+## Références
+
+
+## Utilisation IA
+
+>>>>>>> 105c5d3 (doc:)
