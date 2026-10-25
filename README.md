@@ -25,15 +25,19 @@ labo-book/
 ├── includes/fonts.html          # Inter + JetBrains Mono
 ├── index.qmd                    # page d'accueil
 ├── relecture.qmd                # guide de relecture destiné au prof
+├── rapport-activite-template.xls  # rapport d'activité (heures, mis à jour chaque semaine)
 ├── labos/
-│   ├── chapitre-01/
-│   │   ├── activite-1-1.qmd     # modèle complet
-│   │   └── activite-1-2.qmd     # modèle court
-│   └── chapitre-02/
-│       └── activite-2-1.qmd
+│   ├── chapitre-01/             # activités 1 à 9 (introduction)
+│   ├── chapitre-02/             # activités 10 et 11 (conception en entreprise)
+│   ├── chapitre-03/             # activité 12 (MCSR) + src/ (diagrammes)
+│   └── intervention/            # compte rendu d'intervention
 ├── .github/workflows/publish.yml  # CI : render + deploy
 └── README.md
 ```
+
+Les supports du cours (méthode MCSR, slides, fiche du mini-cas) restent
+localement dans `labos/chapitre-03/03_MCSR/` et `Partage activité MCSR.pdf` :
+ils sont exclus par `.gitignore` pour ne pas être republiés sur le site.
 
 ## Workflow quotidien
 
@@ -44,6 +48,10 @@ git add .
 git commit -m "labo-1-2: ..."
 git push                       # → site régénéré en ~1-2 min
 ```
+
+Chaque semaine : mettre à jour `rapport-activite-template.xls` (heures
+réalisées) et vérifier la structuration du cahier, conformément au
+`devoirs.md` du cours.
 
 ### Ajouter une activité
 

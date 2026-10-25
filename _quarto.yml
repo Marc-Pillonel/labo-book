@@ -1,5 +1,8 @@
 project:
   type: website
+  render:
+    - "*.qmd"
+    - "labos/*/*.qmd"
 
 website:
   title: "Cahier de laboratoire"
@@ -37,6 +40,9 @@ website:
         contents: labos/chapitre-01/*
       - section: "Chapitre 2"
         contents: labos/chapitre-02/*
+      - section: "Chapitre 3"
+        contents:
+          - labos/chapitre-03/activite-12.qmd
       - section: "Interventions"
         contents: labos/intervention/*
 

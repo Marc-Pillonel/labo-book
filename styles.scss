@@ -78,6 +78,20 @@ pre code {
   font-size: 0.87em;
 }
 
+// Tableaux larges (audit, mesures) : défilement horizontal et police réduite
+.table-scroll {
+  overflow-x: auto;
+
+  table {
+    min-width: 60rem;
+    font-size: 0.82rem;
+  }
+
+  .table > :not(caption) > * > * {
+    padding: 0.4rem 0.5rem;
+  }
+}
+
 // Pied de page des documents
 .page-footer {
   border-top: 1px solid #dee2e6;

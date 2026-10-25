@@ -5,26 +5,25 @@ description: "Cahier de laboratoire : activités réalisées au fil du cours, or
 ---
 
 Bienvenue dans mon cahier de laboratoire pour le cours **3275.1 — Conception d'opérations de sécurité**.
-Chaque activité réalisée en cours y est documentée selon la structure précisée dans les spécifications du cours selon Mr. Marc Schaefer.
+Chaque activité réalisée en cours y est documentée selon la structure précisée dans les spécifications du cours.
 
 ## Organisation du cahier
 
 Le cahier est structuré par **chapitres**, chacun contenant les **activités** :
 
-| Chapitre | Contenu |
-|---|---|
-| [Chapitre 1](labos/chapitre-01/activite-1-1.qmd) | Introduction |
-| [Chapitre 2](labos/chapitre-02/activite-2-1.qmd) | Conception entreprise |
-| [Chapitre 3](labos/chapitre-02/activite-3-1.qmd) | Avenir |
-| [Chapitre 4](labos/chapitre-02/activite-4-1.qmd) | Avenir |
-| [Chapitre 5](labos/chapitre-02/activite-5-1.qmd) | Avenir |
+| Chapitre | Contenu | Entrée |
+|---|---|---|
+| Chapitre 1 | Introduction | [Activité 1.1](labos/chapitre-01/activite-1-1.qmd) |
+| Chapitre 2 | Conception en entreprise | [Activité 10](labos/chapitre-02/activite-10.qmd) |
+| Chapitre 3 | Méthode MCSR | [Activité 12](labos/chapitre-03/activite-12.qmd) |
+| Interventions | Conférences et retours d'expérience | [Intervention 1](labos/intervention/intervenant-1.qmd) |
 
 Chaque activité suit la même structure :
 
-1. **Titre** - Numéro de l'activité et son titre
-2. **Objectifs** — Reprends la question posé
-3. **Identification des métiers pertinants** — Pouvoir isolé les métiers cible de l'activité
-4. **Déroulement** — Documentée journal, résultats intermédiaires, références, etc
-5. **Résultats** — Définir des résultats de manière impersonel et pragmatique
-6. **Interprétation des résultats** — Pouvoir comprendre et argumenté les résultats de manière objective
-6. **Références et utilisation IA** — Documenter les sources et les usages de l'IA
+1. **Titre** — numéro de l'activité et son titre
+2. **Objectifs** — reprend la question posée
+3. **Identification des métiers pertinents** — isole les métiers ciblés par l'activité
+4. **Déroulement** — journal, résultats intermédiaires, références
+5. **Résultats** — résultats formulés de manière impersonnelle et pragmatique
+6. **Interprétation des résultats** — lecture argumentée et objective des résultats
+7. **Références et utilisation IA** — sources et usages de l'IA
