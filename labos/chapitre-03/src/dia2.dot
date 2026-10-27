@@ -1,0 +1,59 @@
+digraph G {
+  graph [rankdir=LR, splines=spline, nodesep=0.35, ranksep=0.65, fontname="Helvetica", bgcolor="white", pad=0.25];
+  node [shape=box, style="rounded,filled", fillcolor="#f8f9fa", color="#6c757d", fontname="Helvetica", fontsize=10, margin="0.12,0.07"];
+  edge [color="#495057", fontname="Helvetica", fontsize=9, arrowsize=0.7];
+
+  subgraph cluster_O01 {
+    label=<<B>O01 — Plateforme de production, d'accès, d'alerte et de livraison</B>>;
+    style="rounded,filled";
+    color="#1971c2";
+    fillcolor="#e7f5ff";
+    fontcolor="#1864ab";
+    fontsize=12;
+    margin=12;
+
+    O011 [label=<<B>O01.1</B> Plateforme applicative<BR/><FONT POINT-SIZE="8">app mobile, API, PostgreSQL, portail, FHIR</FONT>>];
+    O012 [label=<<B>O01.2</B> Identité et accès<BR/><FONT POINT-SIZE="8">IAM SaaS, MFA, SCIM</FONT>>];
+    O013 [label=<<B>O01.3</B> Détection et alertes<BR/><FONT POINT-SIZE="8">moteur, push, e-mail, SMS</FONT>>];
+    O014 [label=<<B>O01.4</B> Sauvegardes<BR/><FONT POINT-SIZE="8">réplication Francfort, restauration</FONT>>];
+    O015 [label=<<B>O01.5</B> Développement et livraison<BR/><FONT POINT-SIZE="8">Git, CI/CD, registre, coffre</FONT>>];
+  }
+
+  subgraph cluster_O02 {
+    label=<<B>O02 — Data lake et chaîne d'entraînement ML</B>>;
+    style="rounded,filled";
+    color="#2f9e44";
+    fillcolor="#ebfbee";
+    fontcolor="#2b8a3e";
+    fontsize=12;
+    margin=12;
+
+    O021 [label=<<B>O02.1</B> Data lake et pipelines<BR/><FONT POINT-SIZE="8">zone brute, pseudonymisation, lignage</FONT>>];
+    O022 [label=<<B>O02.2</B> Service ML et registre<BR/><FONT POINT-SIZE="8">entraînement Irlande, validation</FONT>>];
+  }
+
+  P01 [label="P01 Collecte et transmission", fillcolor="#fff3bf", color="#e67700"];
+  P02 [label="P02 Consultation", fillcolor="#fff3bf", color="#e67700"];
+  P03 [label="P03 Détection et alertes", fillcolor="#fff3bf", color="#e67700"];
+  P04 [label="P04 Partage hôpitaux", fillcolor="#fff3bf", color="#e67700"];
+  P05 [label="P05 Analyse et entraînement", fillcolor="#fff3bf", color="#e67700"];
+  P06 [label="P06 Inscription et accès", fillcolor="#fff3bf", color="#e67700"];
+  P07 [label="P07 Développement et livraison", fillcolor="#fff3bf", color="#e67700"];
+
+  P01 -> O011;
+  P02 -> O011;
+  P03 -> O013;
+  P03 -> O011 [style=dashed, label="affichage"];
+  P04 -> O011;
+  P04 -> O012;
+  P05 -> O021;
+  P06 -> O012;
+  P07 -> O015;
+
+  O021 -> O013 [label="modèles", color="#2f9e44"];
+  O013 -> O011 [label="alertes", style=dashed];
+  O015 -> O011 [label="déploie", style=dashed];
+  O015 -> O013 [label="déploie", style=dashed];
+  O014 -> O011 [label="sauvegarde", style=dotted];
+  O014 -> O021 [label="sauvegarde", style=dotted];
+}

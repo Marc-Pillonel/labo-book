@@ -2,7 +2,7 @@
 title: "Activité 12"
 subtitle: "Appliquer la méthode MCSR sur un cas pratique"
 
-date: "2026-10-23"
+date: "2026-10-27"
 ---
 
 **Travail individuel**, Marc Pillonel. Entretien avec l'assistant-répondant lors de la séance A5 (semaine 43).
@@ -30,9 +30,9 @@ Les patients ne sont pas un métier de l'entreprise, mais ils produisent les mes
 
 ## Déroulement
 
-Je travaille sur la fiche de la startup et sur les réponses de l'assistant-répondant pendant la séance A5. La fiche donne l'organisation, le périmètre, les objectifs et les écarts maximaux admissibles. L'entretien complète ce que le document ne dit pas, en particulier sur les fournisseurs et les preuves disponibles.
+Je travaille sur le mini-cas DataHealth et sur les réponses de l'assistant-répondant pendant la séance A5. Le mini-cas donne l'organisation, le périmètre, les objectifs et les écarts maximaux admissibles. L'entretien complète ce que le document ne dit pas, en particulier sur les fournisseurs et les preuves disponibles.
 
-Je commence par le contexte réglementaire, parce qu'il fixe ce qui est admissible dans le domaine de la santé. J'enchaîne avec les processus, les objets informatiques, les besoins de protection et les concepts de sécurité. Je termine par l'audit de maturité, la PSSI et les actions à mener.
+Je commence par le contexte réglementaire, parce qu'il fixe ce qui est admissible dans le domaine de la santé. J'enchaîne avec les processus, les objets informatiques, les besoins de protection et les concepts de sécurité. Je termine par l'audit de maturité, la PSSI et les actions à mener. Pour respecter la consigne « 1-2 objets à besoin accru », j'agrège les composants en deux objets principaux et je documente les sous-ensembles séparément.
 
 Je n'ai pas examiné les preuves documentaires : les statuts de l'audit restent des constats de pré-audit.
 
@@ -40,7 +40,9 @@ Je n'ai pas examiné les preuves documentaires : les statuts de l'audit restent 
 
 ### Contexte spécifique et cadre réglementaire
 
-DataHealth vend de la télésurveillance à distance à des patients chroniques : elle collecte des mesures à domicile, les rend accessibles aux médecins, détecte les anomalies, partage les dossiers avec les hôpitaux partenaires et livre les évolutions du produit. La plateforme relie environ 8 000 patients, 120 médecins et 6 hôpitaux partenaires ; les dispositifs et les smartphones des patients sortent du périmètre, mais les données qu'ils produisent y entrent. L'entreprise veut passer de 6 à 15 hôpitaux partenaires en 24 mois, ouvrir en France dans 12 mois et réussir une série A : la disponibilité, la confidentialité, la traçabilité et les preuves en découlent.
+DataHealth vend de la télésurveillance à distance à des patients chroniques : elle collecte des mesures à domicile, les rend accessibles aux médecins, détecte les anomalies, partage les dossiers avec les hôpitaux partenaires et livre les évolutions du produit. La plateforme relie environ 8 000 patients, 120 médecins et 6 hôpitaux partenaires ; les dispositifs et les smartphones des patients sortent du périmètre, mais les données qu'ils produisent y entrent. L'entreprise veut passer de 6 à 15 hôpitaux partenaires en 24 mois, ouvrir en France dans 12 mois et réussir une série A : la disponibilité, la confidentialité, la traçabilité et les preuves en découlent. Le data lake contient une zone de données brutes, dans leur format d'origine, et une zone pseudonymisée utilisée pour l'entraînement.
+
+Les volumes (8 000 patients, 120 médecins, 6 hôpitaux, 17 personnes), le stockage local de 48 h, les seuils de 4 h, 8 h, 5 min et 30 min, ainsi que la QoS de 95 % sont des ordres de grandeur issus de l'entretien avec l'assistant-répondant. Ils ne figurent pas dans le mini-cas et restent à valider par le métier ; ils sont utilisés comme hypothèses de travail pour rendre les écarts mesurables.
 
 Le cadre réglementaire superpose plusieurs textes :
 
@@ -69,10 +71,12 @@ Je retiens les processus indispensables aux objectifs stratégiques et économiq
 | P01 | Collecte et transmission des mesures | Mettre à disposition des médecins des mesures complètes, exactes et à jour, collectées depuis les dispositifs des patients | Confidentialité, intégrité, disponibilité de l'API, traçabilité de la source, conformité nLPD et secret médical, qualité (exhaustivité, délai) | Perte définitive de mesures ; altération non détectée d'une valeur ; indisponibilité de l'API de plus de 4 h | P06, dispositifs et réseau (hors périmètre) |
 | P02 | Consultation des données par les médecins | Permettre au médecin de consulter l'état et l'historique de ses patients et de documenter sa décision clinique | Confidentialité et cloisonnement par patient et par médecin ; intégrité ; disponibilité pendant les heures ouvrables ; traçabilité des accès ; conformité (nLPD, secret médical) | Indisponibilité du portail de plus de 8 h ouvrables ; accès à un dossier hors de son périmètre | P01, P03, P06 |
 | P03 | Détection d'anomalies et alertes | Détecter les anomalies cliniques et délivrer une alerte exploitable au médecin dans le délai requis | Sûreté clinique (pas de faux négatif critique) ; intégrité (alerte non falsifiée ou supprimée) ; disponibilité du moteur ; traçabilité (modèle, horodatage, destinataire, acquittement) ; conformité (dispositif médical, AI Act) | Alerte critique délivrée après plus de 5 min ; moteur indisponible plus de 30 min ; alerte falsifiée ou supprimée | P01, P05, P06 |
-| P04 | Partage avec les hôpitaux partenaires | Permettre aux hôpitaux partenaires d'accéder aux dossiers des patients dont ils ont la charge, sans élargir leur périmètre | Cloisonnement inter-hôpitaux ; confidentialité ; traçabilité ; conformité (nLPD, secret médical, contrats) ; disponibilité (SLA contractuel à définir) ; intégrité | Accès d'un hôpital aux patients d'un autre ; divulgation de données identifiantes à un tiers non autorisé | P01, P02, P06 |
-| P05 | Analyse et entraînement des modèles | Améliorer les modèles de détection à partir des données historiques, sans exposer les patients | Confidentialité (pseudonymisation) ; protection contre la réidentification ; intégrité des données et des modèles ; traçabilité (lignage, versions) ; conformité (nLPD, AI Act) ; maîtrise des transferts | Réidentification de personnes à partir du data lake | P01, P03, P06 |
-| P06 | Inscription et gestion des accès (support critique) | Garantir que seules les personnes et organisations autorisées accèdent aux données et aux fonctions, avec le privilège nécessaire, et que ces accès sont révoqués en temps utile | Vérification de l'identité et du droit de pratique ; consentement et information ; authentification forte pour les comptes sensibles ; moindre privilège ; séparation des rôles (patient, médecin, hôpital, administrateur) ; traçabilité ; conformité ; disponibilité de l'authentification ; revue périodique | Création d'un compte sans vérification d'identité ou de droit de pratique ; accès à un dossier hors périmètre ; accès persistant après départ ou fin de contrat ; élévation de privilège non détectée ; absence de trace d'un accès sensible ; indisponibilité de l'authentification au-delà du seuil convenu | sert à P01-P05 et P07 |
-| P07 | Développement et livraison de fonctionnalités (support critique) | Ajouter des fonctionnalités de manière contrôlée, testée, traçable et réversible, sans dégrader la sécurité, la conformité ou la sûreté clinique | Intégrité du code et des artefacts ; confidentialité des secrets ; disponibilité de la chaîne de livraison ; traçabilité (commits, revues, déploiements) ; conformité (IEC 62304, AI Act, nLPD) ; qualité | Déploiement en production d'un code non revu ou non testé ; fuite d'un secret ou d'une clé ; altération d'un artefact ou d'une dépendance ; déploiement non tracé ; impossibilité de rollback ou de corriger une vulnérabilité critique dans le délai requis | P06 (accès développeurs) ; P05 (modèles à déployer) ; fournisseur Git/CI-CD ; sauvegardes (O05) |
+| P04 | Partage avec les hôpitaux partenaires | Permettre aux hôpitaux partenaires d'accéder aux dossiers des patients dont ils ont la charge, sans élargir leur périmètre | Cloisonnement inter-hôpitaux ; confidentialité ; traçabilité ; conformité (nLPD, secret médical, contrats) ; disponibilité (SLA contractuel à définir) ; intégrité | Accès d'un hôpital aux patients d'un autre ; divulgation de données identifiantes à un tiers non autorisé ; indisponibilité de plus de 8 h ouvrables | P01, P02, P06 |
+| P05 | Analyse et entraînement des modèles | Améliorer les modèles de détection à partir des données historiques, sans exposer les patients | Confidentialité (pseudonymisation) ; protection contre la réidentification ; intégrité des données et des modèles ; traçabilité (lignage, versions) ; conformité (nLPD, AI Act) ; maîtrise des transferts | Réidentification de personnes à partir de la zone brute ou d'un dataset pseudonymisé ; perte de lignage ; modèle non validé | P01, P03, P06 |
+| P06 | Inscription et gestion des accès (support critique) | Garantir que seules les personnes et organisations autorisées accèdent aux données et aux fonctions, avec le privilège nécessaire, et que ces accès sont révoqués en temps utile | Vérification de l'identité et du droit de pratique ; consentement et information ; authentification forte pour les comptes sensibles ; moindre privilège ; séparation des rôles (patient, médecin, hôpital, administrateur) ; traçabilité ; conformité ; disponibilité de l'authentification ; revue périodique | Création d'un compte sans vérification d'identité ou de droit de pratique ; accès à un dossier hors périmètre ; accès persistant plus de 24 h après un départ ou la fin d'un contrat ; élévation de privilège non détectée ; absence de trace d'un accès sensible ; indisponibilité de l'authentification de plus de 30 min | sert à P01-P05 et P07 |
+| P07 | Développement et livraison de fonctionnalités (support critique) | Ajouter des fonctionnalités de manière contrôlée, testée, traçable et réversible, sans dégrader la sécurité, la conformité ou la sûreté clinique | Intégrité du code et des artefacts ; confidentialité des secrets ; disponibilité de la chaîne de livraison ; traçabilité (commits, revues, déploiements) ; conformité (IEC 62304, AI Act, nLPD) ; qualité | Déploiement en production d'un code non revu ou non testé ; fuite d'un secret ou d'une clé ; altération d'un artefact ou d'une dépendance ; déploiement non tracé ; impossibilité de rollback ou de corriger une vulnérabilité critique sous 30 j | P06 (accès développeurs) ; P05 (modèles à déployer) ; fournisseur Git/CI-CD ; sauvegardes (O01.4) |
+
+Les seuils ci-dessus sont des hypothèses de travail issues de l'entretien. S'ils sont revus par le métier, la décision de besoin accru doit être réévaluée.
 
 #### 1.2 Données de processus
 
@@ -82,13 +86,23 @@ Je retiens les processus indispensables aux objectifs stratégiques et économiq
 | P02 | Mesures, alertes, identité du médecin, périmètre ; portail SPA, API, authentification SaaS, PostgreSQL | Authentification → contrôle du périmètre → sélection du patient → affichage → journalisation | Session expirée, droits obsolètes, mauvaise sélection, portail indisponible → consultation tracée et décision clinique documentée |
 | P03 | Mesures, modèles, seuils, médecin destinataire ; moteur ML, API, data lake, SMS, e-mail, push | Ingestion → score → comparaison au seuil → alerte → notification → acquittement | Faux négatif, faux positif, dérive du modèle, SMS retardé, alerte supprimée → alerte délivrée, acquittée et tracée |
 | P04 | Dossiers, identité de l'hôpital, périmètre, contrat ; portail, API FHIR, authentification SaaS | Authentification → contrôle du périmètre → requête → réponse → journalisation | Mauvais périmètre, jeton expiré, droits persistants, fuite → dossier partagé dans le périmètre autorisé |
-| P05 | Mesures, métadonnées, datasets pseudonymisés ; data lake, pipelines, service ML (Irlande), cloud | Extraction → pseudonymisation → entraînement → validation → déploiement | Réidentification, dataset corrompu, modèle non validé, fuite → modèle amélioré, versionné et validé |
+| P05 | Mesures, métadonnées, zone brute, datasets pseudonymisés ; data lake, pipelines, service ML (Irlande), cloud | Extraction → pseudonymisation → entraînement → validation → déploiement | Réidentification, dataset corrompu, modèle non validé, fuite → modèle amélioré, versionné et validé |
 | P06 | Identité, rôle, périmètre, contrat, droit de pratique, consentement, événements RH ; authentification SaaS, annuaire, portail, API | Demande → vérification → rôle et périmètre → provisioning → MFA → revue → révocation | Compte orphelin, rôle trop large, MFA absent, compte partagé, révocation tardive, annuaire obsolète → accès conforme, tracé et révocable |
 | P07 | Code, tickets, configurations, secrets, dépendances, artefacts ; Git, CI/CD, runners, registre, coffre, staging | Branche → développement → revue → tests → build → analyse → staging → validation → production → rollback | Commit direct sur main, revue contournée, secret dans le code, dépendance compromise, artefact altéré, déploiement non tracé, rollback impossible, runner compromis → fonctionnalité livrée, testée, tracée et réversible |
 
+**Dépenses et conditions-cadres.** Les dépenses principales sont le cloud et les sauvegardes, les licences SaaS (identité, ML, SMS), l'astreinte et le temps de développement. Les conditions-cadres sont les délais et les SLA retenus ci-dessous ; elles rendent les écarts maximaux admissibles vérifiables.
+
+| Processus | Dépenses principales | Conditions-cadres / délais |
+|---|---|---|
+| P01 | Cloud, application mobile, dispositifs (hors périmètre) | Stockage local 48 h ; API 4 h ; RPO 15 min ; réseau du patient hors périmètre |
+| P02 | Portail, IAM, support | Heures ouvrables ; portail 8 h |
+| P03 | Serving ML, SMS/push, astreinte | Alerte 5 min ; moteur 30 min |
+| P04 | API FHIR, IAM, contrats hospitaliers | SLA hospitalier 8 h (hypothèse) |
+| P05 | Data lake, service ML Irlande, DPO | Entraînement par lots ; AI Act ; pseudonymisation |
+| P06 | IAM SaaS, RH, support | Révocation 24 h ; revue trimestrielle ; auth 30 min |
+| P07 | Forge interne, CI/CD, registre, coffre | Correctif critique 30 j ; rollback 1 h ; déploiement tracé |
 
 L'inscription varie selon le profil : le patient vérifie son identité et consent, le médecin prouve son droit de pratique et son périmètre, l'hôpital signe un contrat et définit son tenant. Un défaut d'inscription se propage à P01 à P05 et à P07.
-
 
 ![Vue d'ensemble de la chaîne technique du cas : patients et dispositifs, cloud suisse de production, partenaires, prestataire SMS, service d'identité, sauvegardes à Francfort, moteur ML en Irlande et chaîne de développement.](src/dia1.svg){#fig-processus width=90% fig-align="center" fig-alt="Diagramme de flux : patients et dispositifs connectés alimentent l'application mobile, l'API backend, PostgreSQL, le data lake, le portail médecins et l'API FHIR ; le moteur ML hébergé en Irlande produit les alertes ; les sauvegardes sont répliquées à Francfort ; le service d'identité SaaS contrôle les accès ; le prestataire SMS, les médecins, les hôpitaux et les partenaires sont reliés au cloud suisse ; la forge Git, la CI/CD, le coffre de secrets et le registre d'artefacts forment la chaîne de développement."}
 
@@ -102,14 +116,14 @@ Le cloud n'est pas un processus métier : je le traite comme une condition-cadre
 |---|---|---|---|
 | Cloud public de production | Héberge l'API, PostgreSQL, le portail et l'API FHIR (P01-P04) | Suisse | ISO 27001, SOC 2 ou ISAE 3402, DPA, preuve de chiffrement, plan de sortie |
 | Sauvegardes répliquées | Sauvegarde et restauration (P01-P05, P07) | Francfort | DPA, chiffrement, journal et test de restauration |
-| Service d'authentification SaaS | Authentification et fédération des identités (P02, P04, P06, P07) | À confirmer | ISO 27001 ou SOC 2, configuration MFA, journaux, DPA |
+| Service d'authentification SaaS | Authentification et fédération des identités (P02, P04, P06, P07) | Suisse | ISO 27001 ou SOC 2, configuration MFA, journaux, DPA |
 | Service ML managé | Entraînement des modèles (P05) | Irlande | DPA, preuve de pseudonymisation, analyse de réidentification |
-| Prestataire SMS / push / e-mail | Envoi des alertes (P03) | À confirmer | DPA, modèle de message minimisé, journaux, SLA |
-| Forge Git et CI/CD | Versionnement, builds, tests, déploiement (P07) | À confirmer | DPA, ISO 27001/SOC 2, branches protégées, coffre de secrets, plan de sortie |
+| Prestataire SMS / push / e-mail | Envoi des alertes (P03) | Suisse (prestataire externe) | DPA, modèle de message minimisé, journaux, SLA |
+| Forge Git et CI/CD | Versionnement, builds, tests, déploiement (P07) | Interne (Suisse) | Contrôles internes, journaux, branches protégées, coffre de secrets, plan de reprise |
 
 Les points sensibles restent l'isolation des tenants, la gestion des clés, la journalisation et la réversibilité ; ils sont traités dans l'audit et la PSSI.
 
-Je regroupe ces solutions en objets : O01 pour la plateforme de production sur le cloud suisse, O02 pour le data lake et la ML, O03 pour l'identité, O04 pour les alertes, O05 pour les sauvegardes et O06 pour le développement et la livraison. Le cloud reste une condition-cadre commune.
+Je regroupe ces solutions en deux objets : **O01** pour la plateforme de production, l'identité, les alertes, les sauvegardes et le développement, et **O02** pour le data lake et la chaîne d'entraînement ML. Le cloud reste une condition-cadre commune. Les six sous-ensembles qui détaillent O01 et O02 sont présentés en 2.3 ; ils ne sont pas des objets distincts.
 
 #### 1.4 Processus non retenus
 
@@ -117,7 +131,7 @@ Je ne retiens pas les processus support administratifs (RH, finance, facturation
 
 ### Phase 2 : objets informatiques à protéger
 
-Je pars des processus, puis j'agrège les composants qui remplissent une fonction commune. Je limite le nombre d'objets et j'évite qu'un même composant apparaisse dans plusieurs. Le cloud public reste une condition-cadre commune, pas un objet distinct. La chaîne de développement et de livraison forme O06 : elle remplit une fonction distincte et peut modifier O01, O02 et O04.
+Je pars des processus, puis j'agrège les composants qui remplissent une fonction commune. Je limite le nombre d'objets et j'évite qu'un même composant apparaisse dans plusieurs. Le cloud public reste une condition-cadre commune, pas un objet distinct. La chaîne de développement et de livraison est un sous-ensemble de O01 : elle remplit une fonction de production et peut modifier O01.1, O01.3 et O02.
 
 #### 2.1 Applications par processus
 
@@ -131,77 +145,80 @@ Je pars des processus, puis j'agrège les composants qui remplissent une fonctio
 | P06 | Service d'identité SaaS, annuaire, portail/API d'administration | Inscription, provisioning, revue, révocation |
 | P07 | Forge Git, CI/CD, registre d'artefacts, coffre de secrets, staging | Versionnement, revue, build, tests, déploiement, rollback |
 
-: Tableau des processus {.tbl-colwidths="[12,44,44]"}
+: Applications par processus {.tbl-colwidths="[12,44,44]"}
 
 #### 2.2 Objets informatiques à protéger (phase 2)
 
 | ID | Nom | Description / plateformes | Processus servis | Composants principaux | Données et flux | Personnes / groupes | Conditions-cadres (fournisseurs, localisation) |
 |---|---|---|---|---|---|---|---|
-| O01 | Plateforme de production et application mobile | App mobile iOS/Android (stockage local 48 h) ; API REST sur Kubernetes managé ; PostgreSQL managé ; portail web SPA ; API FHIR. Cloud public ISO 27001 en Suisse ; pas de centre de données propre. | P01, P02, P03 (affichage/acquittement), P04 | App mobile ; API REST ; PostgreSQL ; portail SPA ; API FHIR ; Kubernetes ; journaux | Entrées : mesures, identités, requêtes médecins/hôpitaux ; sorties : dossiers, alertes, flux FHIR ; données : mesures, dossiers patients, identités, journaux | Patients ; médecins ; hôpitaux ; administrateurs ; support | Cloud public ISO 27001 (Suisse) ; contrats hôpitaux ; nLPD ; secret médical ; dépendance O03 |
-| O02 | Data lake et chaîne d'entraînement ML | Stockage objet + pipelines d'ingestion + pseudonymisation + service ML managé (Irlande) + registre de modèles. Data lake en Suisse ; entraînement en Irlande. | P05 ; alimente P03 | Data lake ; pipelines ; pseudonymisation ; service ML managé ; registre de modèles ; jeux de données | Entrées : mesures et métadonnées de P01 ; sorties : modèles vers O04 ; données : datasets pseudonymisés, modèles, journaux | Ingénieurs data/ML ; responsable réglementaire/qualité ; administrateurs | Cloud Suisse ; service ML Irlande (UE) ; nLPD art. 16 ; AI Act ; contrats ; pseudonymisation à vérifier |
-| O03 | Service d'identité et d'accès (IAM) | SaaS d'authentification et de fédération pour employés, médecins et hôpitaux ; MFA ; provisioning ; journaux. Localisation à confirmer. | P06 ; P01, P02, P04, P07 | Service d'authentification SaaS ; annuaire ; MFA ; provisioning/SCIM ; portail d'administration ; journaux | Entrées : inscriptions, rôles, périmètres, événements RH, contrats ; sorties : jetons, assertions, journaux ; données : identités, credentials, rôles, logs | Patients ; médecins ; hôpitaux ; employés ; administrateurs | SaaS tiers (localisation à confirmer) ; contrat ; ISO 27001/SOC 2 ; nLPD ; secret médical |
-| O04 | Détection et chaîne d'alerte | Moteur d'anomalies en production ; service d'alerte ; notification push, e-mail et SMS via prestataire tiers. Cloud Suisse + prestataire SMS. | P03 ; affichage/acquittement via O01 | Serving du modèle ; moteur d'alerte ; push ; e-mail ; SMS ; files d'attente ; journaux | Entrées : mesures de O01, modèles de O02 ; sorties : alertes vers médecins et portail ; données : scores, alertes, acquittements, numéros | Médecins ; patients ; administrateurs ; prestataire SMS | Dispositif médical (à confirmer) ; AI Act ; prestataire SMS (localisation à confirmer) ; délai de 5 min |
-| O05 | Sauvegardes et restauration | Stockage de sauvegarde répliqué à Francfort ; politiques de rétention ; tests de restauration. Cloud Allemagne. | P01 à P05 et P07 | Stockage objet ; réplication ; chiffrement ; outil de restauration ; journaux | Entrées : copies de O01, O02, O03 et O06 ; sorties : restauration ; données : données de santé, configurations, bases, dépôts et artefacts | DevOps/SRE ; administrateurs ; CTO | Cloud Allemagne (UE) ; nLPD art. 16 ; contrat ; chiffrement ; test de restauration |
-| O06 | Chaîne de développement et de livraison | Forge Git ; pipelines CI/CD ; registre d'artefacts ; coffre de secrets ; staging. Cloud/SaaS à confirmer ; pas de données de production en clair. | P07 ; contribue à P01-P04 via les déploiements | Forge Git ; runners CI/CD ; tests automatisés ; registre d'artefacts ; coffre de secrets ; staging ; journaux | Entrées : code, configurations, secrets ; sorties : builds, images, déploiements ; données : code source, artefacts, secrets, journaux | Développeurs ; DevOps/SRE ; CTO ; administrateurs | SaaS/cloud (localisation à confirmer) ; contrats ; ISO 27001/SOC 2 ; nLPD ; séparation dev/prod |
+| O01 | Plateforme de production, d'accès, d'alerte et de livraison | Regroupe O01.1 à O01.5 : app mobile iOS/Android (stockage local 48 h) ; API REST sur Kubernetes managé ; PostgreSQL managé ; portail web SPA ; API FHIR ; IAM SaaS ; moteur d'alertes et canaux push/e-mail/SMS ; sauvegardes répliquées ; forge Git/CI-CD interne. Cloud public ISO 27001 en Suisse ; pas de centre de données propre. | P01, P02, P03, P04, P06, P07 | O01.1 Plateforme applicative ; O01.2 Identité et accès ; O01.3 Détection et alertes ; O01.4 Sauvegardes ; O01.5 Développement et livraison (voir 2.3) | Entrées : mesures, identités, requêtes médecins/hôpitaux, code, configurations ; sorties : dossiers, alertes, flux FHIR, builds, déploiements ; données : mesures, dossiers patients, identités, rôles, alertes, acquittements, journaux, code, artefacts, secrets | Patients ; médecins ; hôpitaux ; développeurs ; DevOps ; support ; administrateurs ; CTO | Cloud Suisse ; auth SaaS Suisse ; SMS Suisse (prestataire externe) ; forge interne Suisse ; sauvegardes Francfort ; nLPD ; secret médical ; LDM/AI Act à confirmer |
+| O02 | Data lake et chaîne d'entraînement ML | Zone brute (données d'origine) + zone pseudonymisée ; pipelines d'ingestion ; service ML managé (Irlande) ; registre de modèles. Data lake en Suisse ; entraînement en Irlande. | P05 ; alimente O01.3 | O02.1 Data lake et pipelines ; O02.2 Service ML et registre de modèles (voir 2.3) | Entrées : mesures et métadonnées de P01, données brutes ; sorties : modèles vers O01.3 ; données : datasets bruts et pseudonymisés, modèles, journaux de lignage | Ingénieurs data/ML ; DPO ; responsable réglementaire/qualité ; administrateurs | Cloud Suisse ; service ML Irlande (EEE) ; nLPD art. 16 ; AI Act ; contrats ; pseudonymisation à vérifier |
 
-Je vérifie que chaque composant est rattaché à un objet : collecte, consultation et partage vont dans O01 ; le data lake et l'entraînement dans O02 ; l'identité dans O03 ; le serving et les alertes dans O04 ; les sauvegardes dans O05 ; le développement et la livraison dans O06. L'entraînement et le serving restent séparés : le modèle est un flux, pas un composant partagé. Le cloud reste une condition-cadre commune. Le service d'identité n'apparaît que dans O03, et les autres objets en dépendent. O06 ne contient pas de données de production, seulement du code, des artefacts et des secrets. Six objets pour 17 personnes et sept processus, c'est raisonnable. Si je voulais traiter les risques propres aux téléphones des patients, je détacherais l'application mobile en O07.
+Je vérifie que chaque composant est rattaché à un objet : la plateforme applicative, l'identité, les alertes, les sauvegardes et le développement vont dans O01 ; le data lake, les pipelines et l'entraînement dans O02. Les six sous-ensembles O01.1 à O01.5 et O02.1 à O02.2 sont agrégés en deux objets : la méthode permet de regrouper des composants logiquement apparentés pour limiter le nombre d'objets. Les journaux sont un service transverse, rattaché à O01.1 et alimenté par O01.2, O01.3 et O01.5 ; ils ne constituent pas un objet distinct. O01.5 ne contient pas de données de production en clair, seulement du code, des artefacts et des secrets. Deux objets pour 17 personnes et sept processus, c'est raisonnable. Si je voulais traiter les risques propres aux téléphones des patients, je détacherais l'application mobile, mais ce n'est pas nécessaire ici.
 
-**Aspects physiques.** DataHealth n'a pas de centre de données. Les aspects physiques pertinents sont les locaux et les postes des administrateurs et des développeurs, les smartphones des patients (hors périmètre), les data centers des fournisseurs (couverts par ISO 27001) et les runners CI/CD, hébergés dans le cloud. Les sauvegardes sont répliquées à Francfort et aucun support physique n'est transporté.
+**Aspects physiques.** DataHealth n'a pas de centre de données. Les aspects physiques pertinents sont les locaux et les postes des administrateurs et des développeurs, les smartphones des patients (hors périmètre), les data centers des fournisseurs (couverts par ISO 27001) et les runners CI/CD, hébergés dans le cloud ou dans les locaux. Les sauvegardes sont répliquées à Francfort et aucun support physique n'est transporté.
 
-![Objets informatiques à protéger et flux entre eux : les processus P01 à P07 sont portés par O01, O02, O03, O04 et O06 ; O05 sauvegarde les autres objets ; O06 déploie vers O01, O02 et O04.](src/dia2.svg){#fig-objets width=90% fig-align="center" fig-alt="Graphe des objets : P01 Collecte et P02 Consultation portées par O01 Plateforme de production ; P04 Partage par O01 et O03 Identité et accès ; P06 Inscription par O03 ; P05 Analyse et entraînement par O02 Data lake et ML ; P03 Détection et alertes par O04 ; P07 Développement et livraison par O06 ; O05 Sauvegardes reçoit les flux de O01, O02 et O06 ; O06 déploie vers O01, O02 et O04."}
+![Objets O01 et O02, sous-ensembles et flux : O01 porte P01 à P04, P06 et P07 ; O02 porte P05 ; O01.3 reçoit les modèles de O02.2 ; O01.5 déploie vers O01.1 et O01.3 ; O01.4 sauvegarde O01 et O02.](src/dia2.svg){#fig-objets width=90% fig-align="center" fig-alt="Graphe des deux objets : O01 Plateforme de production, d'accès, d'alerte et de livraison contient O01.1 Plateforme applicative, O01.2 Identité et accès, O01.3 Détection et alertes, O01.4 Sauvegardes et O01.5 Développement et livraison ; O02 Data lake et chaîne d'entraînement ML contient O02.1 Data lake et pipelines et O02.2 Service ML et registre de modèles ; P01 à P04, P06 et P07 sont portés par O01 ; P05 par O02 ; O01.5 déploie vers O01.1 et O01.3 ; O01.4 sauvegarde O01 et O02."}
 
-La figure @fig-objets montre l'agrégation retenue : un processus peut être porté par plusieurs objets, mais chaque composant n'appartient qu'à un seul objet. Les flèches « déploie » matérialisent le point de concentration que représente O06.
+La figure @fig-objets montre l'agrégation retenue : un processus peut être porté par plusieurs sous-ensembles, mais chaque composant n'appartient qu'à un seul objet. Les flèches « déploie » matérialisent le point de concentration que représente O01.5.
+
+#### 2.3 Sous-ensembles et composants
+
+Les six sous-ensembles ci-dessous documentent les composants, les données et les conditions-cadres. Ils ne sont pas des objets informatiques au sens de la méthode : seuls O01 et O02 entrent dans les phases 3 et 4. Cette distinction évite de compter deux fois les mêmes mesures et permet de respecter la limite de 1-2 objets à besoin accru.
+
+| ID | Sous-ensemble | Objet | Description / composants | Processus | Données | Personnes | Conditions-cadres |
+|---|---|---|---|---|---|---|---|
+| O01.1 | Plateforme applicative | O01 | App mobile iOS/Android (stockage local 48 h) ; API REST ; PostgreSQL ; portail SPA ; API FHIR ; Kubernetes ; journaux | P01-P04 | Mesures, dossiers, requêtes, journaux | Patients, médecins, hôpitaux, support, administrateurs | Cloud Suisse ; contrats hôpitaux ; nLPD ; secret médical |
+| O01.2 | Identité et accès (IAM) | O01 | SaaS d'authentification et de fédération ; annuaire ; MFA ; provisioning/SCIM ; portail d'administration ; journaux | P06 ; P01, P02, P04, P07 | Identités, credentials, rôles, périmètres, journaux | Patients, médecins, hôpitaux, employés, administrateurs | Auth SaaS Suisse ; contrat ; ISO 27001/SOC 2 ; nLPD |
+| O01.3 | Détection et alertes | O01 | Serving du modèle ; moteur d'anomalies ; push, e-mail, SMS ; files d'attente ; journaux | P03 ; affichage via O01.1 | Scores, alertes, acquittements, numéros | Médecins, patients, administrateurs, prestataire SMS | Dispositif médical (à confirmer) ; AI Act ; SMS Suisse ; délai 5 min |
+| O01.4 | Sauvegardes et restauration | O01 | Stockage objet répliqué ; politiques de rétention ; chiffrement ; outil de restauration ; journaux | P01-P05, P07 | Données de santé, configurations, bases, dépôts, artefacts | DevOps/SRE, administrateurs, CTO | Cloud Allemagne (EEE) ; contrat ; chiffrement ; test de restauration |
+| O01.5 | Développement et livraison | O01 | Forge Git ; runners CI/CD ; tests ; registre d'artefacts ; coffre de secrets ; staging ; journaux | P07 ; déploie O01.1 et O01.3 | Code, configurations, secrets, builds, images | Développeurs, DevOps/SRE, CTO, administrateurs | Interne Suisse ; contrôles internes ; séparation dev/prod |
+| O02.1 | Data lake et pipelines | O02 | Stockage objet ; ingestion ; pseudonymisation ; lignage ; zone brute et zone pseudonymisée | P05 | Mesures, métadonnées, datasets bruts et pseudonymisés | Ingénieurs data/ML, DPO, administrateurs | Cloud Suisse ; nLPD art. 16 ; AI Act |
+| O02.2 | Service ML et registre | O02 | Service ML managé (Irlande) ; registre de modèles ; validation ; versionnement | P05 ; fournit O01.3 | Modèles, versions, rapports de validation | Data/ML, qualité, administrateurs | Irlande (EEE) ; DPA ; AI Act |
 
 ### Phase 3 : besoins de protection
 
-Un besoin de protection accru apparaît lorsque les exigences fondamentales ne suffisent pas à éviter un écart non admissible. La consigne demande un ou deux objets ; j'en retiens trois, O02 (data lake et ML), O04 (détection et alertes) et O06 (développement et livraison). Un code non revu, un secret exposé ou un artefact altéré peut modifier O01, O02 et O04 en même temps. O01, O03 et O05 ont aussi des écarts non admissibles, mais les exigences fondamentales les couvrent si elles sont mises en œuvre.
+Un besoin de protection accru est une décision binaire, indépendante de la protection de base : si une violation d'un objectif peut entraîner au moins un écart non admissible, l'objet a un besoin accru. Un seul écart suffit. La consigne demande un ou deux objets ; l'agrégation de la phase 2 conduit à deux objets, O01 et O02, tous deux concernés.
 
-| Objet | Objectif concerné | Événement inacceptable | Écart non admissible ? | Besoin accru ? | Exigences fondamentales de référence | Justification |
-|---|---|---|---|---|---|---|
-| O01 | Confidentialité, intégrité, disponibilité, traçabilité | Accès à un dossier hors périmètre ; divulgation à un tiers non autorisé ; altération non détectée d'une mesure ; API indisponible > 4 h ; portail indisponible > 8 h ouvrables ; absence de trace d'accès | Oui : écarts P01, P02 et P04 | Non (protection de base suffisante) | PR 3.1, PR 3.3, PR 3.4, PR 3.6, PR 3.9, DE 4.1 | Les exigences fondamentales PR 3.1 (durcissement), PR 3.3 (accès), PR 3.4 (segmentation réseau), PR 3.6 (chiffrement et intégrité), PR 3.9 (disponibilité) et DE 4.1 (journalisation) couvrent ces objectifs, à condition d'être pleinement mises en œuvre. O01 dépend de O03, O05 et O06. Aucune MTO supplémentaire identifiée. |
-| O02 | Confidentialité, intégrité, traçabilité | Réidentification de personnes à partir du data lake ; fuite de datasets pseudonymisés ; modèle altéré ; perte de lignage | Oui : réidentification (P05) | **Oui (MTO supplémentaires)** | ID 2.2, PR 3.2, PR 3.3, PR 3.5, PR 3.6, PR 3.8, DE 4.1 | La réidentification est un écart non admissible. Les exigences de base (PR 3.3, PR 3.6) ne suffisent pas : il faut des MTO supplémentaires de pseudonymisation, de test de réidentification, de cloisonnement et de lignage. |
-| O03 | Confidentialité, intégrité, disponibilité, traçabilité | Vol de credentials ; prise de contrôle de compte ; élévation de privilège ; accès hors périmètre ; indisponibilité de l'authentification | Oui : accès hors périmètre (P02, P04) | Non (protection de base suffisante) | PR 3.1, PR 3.3, PR 3.4, DE 4.1, RS/RC 5.2 | PR 3.3 (authentification, moindre privilège) couvre l'objectif ; MFA, RBAC et revue des accès font partie de la mise en œuvre du besoin de protection. O03 est une dépendance critique de O01 et O06, mais ne nécessite pas de MTO supplémentaire. |
-| O04 | Confidentialité, intégrité, disponibilité, traçabilité | Alerte critique délivrée > 5 min ; moteur indisponible > 30 min ; alerte falsifiée ou supprimée ; contenu d'alerte divulgué au prestataire SMS | Oui : écarts P03 | **Oui (MTO supplémentaires)** | PR 3.1, PR 3.3, PR 3.4, PR 3.6, PR 3.9, DE 4.1, RS/RC 5.1, RS/RC 5.3 | La sûreté clinique, le délai de 5 min et l'intégrité des alertes dépassent la protection de base : il faut des MTO supplémentaires (redondance, acquittement, intégrité de bout en bout, surveillance du modèle, minimisation du contenu). |
-| O05 | Confidentialité, intégrité, disponibilité | Fuite de sauvegardes ; sauvegarde corrompue ; restauration impossible | Oui : perte ou altération de données, indisponibilité | Non (protection de base suffisante) | PR 3.1, PR 3.6, PR 3.7, RS/RC 5.2 | PR 3.7 (sauvegarde, restauration, tests) et PR 3.6 (chiffrement) couvrent l'objectif. O05 est une dépendance critique de O01, O02 et O06, mais ne nécessite pas de MTO supplémentaire au-delà de la protection de base. |
-| O06 | Confidentialité, intégrité, disponibilité, traçabilité | Injection de code malveillant en production ; fuite de secrets ; altération d'un artefact ; déploiement non tracé ; compromission d'un runner ; rollback impossible | Oui : un code non revu peut altérer P01, fausser P03 ou exposer des données (P04) | **Oui (MTO supplémentaires)** | PR 3.1, PR 3.2, PR 3.3, PR 3.5, PR 3.6, PR 3.8, DE 4.1, RS/RC 5.2 | La chaîne de développement peut modifier simultanément O01, O02 et O04. PR 3.8 (développement sécurisé) fournit le cadre, mais ne suffit pas à lui seul : il faut des MTO supplémentaires de revue, de protection des secrets, d'intégrité des artefacts, d'isolation des runners et de rollback. |
-: Besoins de protection par objet {.small}
+| Objet | Objectif concerné | Événement inacceptable | Scénarios crédibles | Écart non admissible ? | Besoin accru ? | Exigences de référence | Preuves | MTO si écart |
+|---|---|---|---|---|---|---|---|---|
+| O01 | Confidentialité, intégrité, disponibilité, traçabilité, sûreté clinique | Accès à un dossier hors périmètre ; alerte critique délivrée après plus de 5 min ; code non revu ou injection ; restauration impossible ; API indisponible plus de 4 h ; portail indisponible plus de 8 h ouvrables ; fuite vers le prestataire SMS | Compte médecin compromis ; commit malveillant ; ransomware ; saturation de la file d'alertes ; prestataire SMS compromis ; panne d'une zone | Oui : écarts P01-P04, P06, P07 | **Oui** | E01 à E18 (toutes les applicables) ; priorité PR 3.1 à 3.9, DE 4.1, RS/RC 5.1 à 5.3, ID 2.2 | Audit E01 à E18 ; surtout E05, E06, E08, E10, E13, E15, E16, E17 | Tableau O01 de la phase 4 |
+| O02 | Confidentialité, intégrité, traçabilité, protection contre la réidentification | Réidentification à partir de la zone brute ou d'un dataset pseudonymisé ; fuite de datasets ; modèle altéré ; perte de lignage | Copie de la zone brute ; recoupement de quasi-identifiants ; compromission d'un compte data/ML ; pipeline non versionné | Oui : réidentification (P05) | **Oui** | E03, E04, E05, E06, E08, E10, E17 ; exigences transverses portées par O01 (E01, E02, E11, E12, E14, E15, E18) ; référence principale ID 2.2, PR 3.2, PR 3.3, PR 3.5, PR 3.6, PR 3.8, DE 4.1 | Audit E03, E04, E05, E06, E08, E10, E17 | Tableau O02 de la phase 4 |
 
-**Conclusion.** Trois objets justifient donc une protection accrue. Pour O01, O03 et O05, la priorité n'est pas d'ajouter des mesures, mais de prouver et de compléter la protection de base : l'audit montre qu'elle n'est pas démontrée (E05 pour les accès, E06 pour le chiffrement, E15 pour le durcissement). Sans O06, le point de concentration de la chaîne de développement resterait sans mesures supplémentaires.
+**Conclusion.** Deux objets, O01 et O02, justifient une protection accrue. L'agrégation a absorbé les composants qui auraient chacun justifié un besoin accru ; l'analyse reste au niveau des objets, pas des sous-ensembles. La méthode avertit qu'une analyse trop fine conduit à tout protéger : c'est pourquoi je ne descends pas au niveau des composants pour la décision. Les seuils utilisés sont des hypothèses de travail ; s'ils sont revus, la décision doit être réévaluée.
 
 ### Phase 4 : concept de sécurité
 
-Je m'appuie sur l'annexe C pour O01, O03 et O05. Pour O02, O04 et O06, les tableaux ci-dessous définissent les MTO supplémentaires.
+Je m'appuie sur l'annexe C pour la protection de base (PSSI chapitre 7). Les tableaux ci-dessous définissent uniquement les MTO supplémentaires au-delà de cette base, pour O01 et O02. Je n'applique ni STRIDE-LM ni threat modeling, conformément à la consigne : l'audit est une vérification générale de sécurité et de résilience.
+
+**O01 : plateforme de production, d'accès, d'alerte et de livraison**
+
+| Sous-ensemble | Écart non admissible à éviter | MTO supplémentaire | Mise en œuvre (comment, qui, quand) | Preuve / indicateur |
+|---|---|---|---|---|
+| O01.1 | Accès hors périmètre ; exposition de l'API | Isolation des tenants ; API gateway/WAF ; accès administrateur juste-à-temps ; revue trimestrielle ; journal immuable | CTO/DevOps ; 3 mois ; revue trimestrielle | Schéma, configuration, journaux, comptes rendus de revue |
+| O01.2 | Prise de contrôle ; accès persistant | MFA résistant au phishing pour les administrateurs ; SCIM ; révocation sous 24 h ; alerte sur élévation de privilège ; revue trimestrielle | CTO/DevOps ; 3 mois | Configuration, journaux, revue |
+| O01.3 | Alerte critique > 5 min ; alerte falsifiée ou supprimée | Redondance des canaux ; file persistante ; mesure de latence de bout en bout ; signature/HMAC ; journal immuable ; double validation ; mode dégradé | CTO/DevOps + astreinte ; 3 mois ; tests mensuels | Tableau de bord, test de bascule, journal |
+| O01.3 | Fuite vers le prestataire SMS | Minimisation (pas de nom complet, pas de diagnostic) ; chiffrement ; DPA ; clauses de confidentialité | CTO/DPO ; 1 mois ; revue annuelle | Modèle de message, DPA |
+| O01.4 | Restauration impossible ; ransomware | Stratégie 3-2-1 ; sauvegardes immuables ; clés séparées ; tests trimestriels ; RTO/RPO ; sauvegarde des dépôts et artefacts | DevOps ; 3 à 6 mois | Rapport de test, RTO/RPO |
+| O01.5 | Injection de code ; fuite de secrets ; artefact altéré | Branches protégées ; revue obligatoire ; commits signés ; déploiement uniquement via CI/CD ; coffre de secrets ; rotation ; scan de secrets ; registre d'artefacts ; signature ; SCA/SAST/DAST ; verrouillage ; provenance ; runners isolés ; rollback | CTO/DevOps ; 1 à 6 mois ; à chaque changement | Configuration, journaux, rapport SCA, signatures |
+| O01.5 | Déploiement non tracé | Journal des déploiements ; versionnement ; staging ; rollback testé | DevOps ; 3 mois ; test trimestriel | Journal, procédure, rapport de test |
+| O01.1 | Indisponibilité > 4 h (API) ou > 8 h (portail) | Redondance multi-zone ; capacité ; supervision ; PCA ; mode dégradé | CTO/DevOps ; 3 mois ; test trimestriel | Plan, test de charge |
+
+: Concept de sécurité de O01 {.small}
 
 **O02 : data lake et chaîne d'entraînement ML**
 
-| Écart non admissible à éviter | MTO supplémentaire | Mise en œuvre (comment, qui, quand) | Preuve / indicateur |
-|---|---|---|---|
-| Réidentification à partir du data lake | Pseudonymisation renforcée et séparation des identifiants ; test de réidentification (k-anonymat, quasi-identifiants) avant chaque dataset | Data/ML + DPO ; avant chaque entraînement ; revue trimestrielle | Rapport de test de réidentification ; registre des datasets |
-| Fuite de datasets pseudonymisés | Cloisonnement du data lake (compte séparé, réseau, IAM) ; chiffrement avec clés gérées par DataHealth ; accès juste-à-temps | CTO/DevOps + Data/ML ; 3 mois ; revue trimestrielle | Schéma de cloisonnement ; logs d'accès ; preuve de chiffrement |
-| Modèle altéré ou perte de lignage | Registre des modèles et des datasets ; journal immuable ; validation avant déploiement ; séparation entraînement/production | Data/ML + qualité ; à chaque version ; revue trimestrielle | Registre ; journal ; rapport de validation |
-| Accès non autorisé aux données d'entraînement | MFA, RBAC, moindre privilège, revue des accès ; contrat avec le service ML (Irlande) | CTO + DPO ; 3 mois ; revue trimestrielle | Configuration MFA/RBAC ; DPA ; revue des accès |
+| Sous-ensemble | Écart non admissible à éviter | MTO supplémentaire | Mise en œuvre (comment, qui, quand) | Preuve / indicateur |
+|---|---|---|---|---|
+| O02.1 | Réidentification à partir de la zone brute | Pseudonymisation renforcée ; séparation des identifiants ; test de réidentification (k-anonymat, quasi-identifiants) avant chaque dataset ; registre des datasets | Data/ML + DPO ; 3 mois ; revue trimestrielle | Rapport de test, registre |
+| O02.1 | Fuite de datasets pseudonymisés | Cloisonnement (compte, réseau, IAM) ; chiffrement avec clés gérées par DataHealth ; accès juste-à-temps ; DLP | CTO/DevOps + Data/ML ; 3 mois | Schéma, journaux, preuve de chiffrement |
+| O02.2 | Modèle altéré ou perte de lignage | Registre des modèles et des datasets ; journal immuable ; validation avant déploiement ; séparation entraînement/production | Data/ML + qualité ; à chaque version ; revue trimestrielle | Registre, journal, rapport de validation |
+| O02.1 | Accès non autorisé aux données d'entraînement | MFA, RBAC, moindre privilège, revue des accès ; DPA avec le service ML (Irlande) | CTO + DPO ; 3 mois ; revue trimestrielle | Configuration, DPA, revue |
+| O02.1 | Zone brute trop large | Minimisation ; purge ; pseudonymisation à l'ingestion ; accès restreint | Data/ML + DPO ; 3 mois | Registre, preuve de purge |
+
 : Concept de sécurité de O02 {.small}
 
-**O04 : détection et chaîne d'alerte**
-
-| Écart non admissible à éviter | MTO supplémentaire | Mise en œuvre (comment, qui, quand) | Preuve / indicateur |
-|---|---|---|---|
-| Alerte critique > 5 min | Redondance des canaux (push + e-mail + SMS) avec bascule automatique ; file persistante ; mesure de latence de bout en bout | CTO/DevOps + astreinte ; 3 mois ; tests mensuels | Tableau de bord de latence ; test de bascule |
-| Moteur indisponible > 30 min | Redondance du serving ; supervision ; plan de continuité ; mode dégradé manuel | CTO/DevOps ; 3 mois ; test trimestriel | Plan de continuité ; rapport de test |
-| Alerte falsifiée ou supprimée | Signature/HMAC des alertes ; journal immuable ; contrôle de version du modèle ; double validation pour les alertes critiques | Data/ML + DevOps ; 3 mois ; revue trimestrielle | Journal d'intégrité ; registre des modèles ; procédure |
-| Contenu d'alerte divulgué au prestataire SMS | Minimisation du contenu (pas de nom complet, pas de diagnostic) ; chiffrement ; DPA ; clauses de confidentialité | CTO + DPO ; 1 mois ; revue annuelle | Modèle de message ; DPA ; configuration |
-: Concept de sécurité de O04 {.small}
-
-**O06 : chaîne de développement et de livraison**
-
-| Écart non admissible à éviter | MTO supplémentaire | Mise en œuvre (comment, qui, quand) | Preuve / indicateur |
-|---|---|---|---|
-| Injection de code malveillant ou non revu en production | Git avec branches protégées ; revue obligatoire ; commits signés ; séparation des rôles auteur/relecteur ; déploiement uniquement via CI/CD | CTO/DevOps + développeurs ; 3 mois ; à chaque changement | Configuration des branches ; historique des revues ; journal des déploiements |
-| Fuite de secrets ou de clés | Coffre de secrets ; aucune clé dans le code ; rotation ; scan de secrets ; accès juste-à-temps | CTO/DevOps ; 1 mois ; rotation trimestrielle | Inventaire des secrets ; configuration du coffre ; rapport de scan |
-| Altération d'un artefact ou d'une dépendance | Registre d'artefacts ; signature des images ; analyse des dépendances (SCA) ; verrouillage des versions ; provenance des builds | DevOps + Data/ML ; 3 à 6 mois ; à chaque build | Rapport SCA ; signatures ; provenance ; registre |
-| Compromission d'un runner ou d'un pipeline | Isolation des runners ; moindre privilège ; pas de secrets en clair ; journaux CI/CD ; alertes | DevOps ; 3 mois ; revue trimestrielle | Configuration des runners ; logs ; alertes |
-| Déploiement non tracé ou rollback impossible | Journal des déploiements ; versionnement ; procédure de rollback testée ; environnement de staging | DevOps ; 3 mois ; test trimestriel | Journal ; procédure ; rapport de test |
-: Concept de sécurité de O06 {.small}
+Les mesures de base (MFA, RBAC, TLS/AES, DPA, journalisation, sauvegardes, revue de code, correctifs) sont décrites dans la PSSI chapitre 7 et dans l'annexe C. Les tableaux ci-dessus ne listent que les MTO qui vont au-delà : isolation des tenants, MFA résistant au phishing, signature des artefacts, journal immuable, sauvegardes immuables, mode dégradé et tests de réidentification. Les échéances sont alignées sur les mesures prioritaires (1, 3 ou 6 mois).
 
 ### Phase 5 : mise en œuvre (non traitée)
 
@@ -213,34 +230,35 @@ Je fais un pré-audit sur les informations disponibles : les statuts NV restent 
 
 Statuts : **S** satisfait, **P** partiellement satisfait, **NS** non satisfait, **NV** non vérifié, **NP** non pertinent.
 Types de preuve : **D** document, **C** configuration ou capture d'écran, **J** journal, **E** entretien (preuve faible), **A** aucune.
+Mécanisme : **O** démontré ou affirmé, **?** non documenté ou à vérifier, **N** absent. Un mécanisme absent prouvé donnerait NS ; en l'absence de preuve, le statut reste NV, pas NS.
 
 ::: {.table-scroll}
-| ID | Famille | Réf. annexe C | Exigence (résumé) | Applic. | Objet(s) | Accru | Mécanisme existant | Constat | Preuve (type) | Statut | Écart / MTO proposée | Priorité |
+| ID | Famille | Réf. annexe C | Exigence (résumé) | Applic. | Objet(s) | Mécanisme | Constat | Preuve (type) | Statut | Accru | Écart / MTO proposée | Priorité |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| E01 | GV | GV 1.1 | Organisation de la sécurité | O | Tous | N | O | Pas de responsable sécurité désigné ; le CTO gère de fait ; rôles non formalisés | E (entretien) | P | Désigner un responsable sécurité, formaliser les rôles et la communication | 1 |
-| E02 | GV | GV 1.4 | Formation et sensibilisation | O | Tous | N | N | Aucune information sur les formations | A | NV | Programme de sensibilisation annuel, preuves de participation | 2 |
-| E03 | ID | ID 2.2 | Chaîne d'approvisionnement | O | O01-O06 | O | O | Cloud ISO 27001 reçu ; preuves DPA, SOC 2 et contrats auth, SMS, ML, forge Git à obtenir | D (rapport ISO 27001) | P | Inventaire fournisseurs, DPA, preuves, plan de sortie | 1 |
-| E04 | PR | PR 3.2 | Gestion des faiblesses et vulnérabilités | O | O01-O06 | O | N | Pas de preuve de veille, de scan de dépendances ni de gestion des correctifs | A | NV | Inventaire, veille CVE, SCA, gestion des correctifs | 2 |
-| E05 | PR | PR 3.3 | Identités et contrôles d'accès | O | O01-O06 | O | O | Auth SaaS présente ; MFA, moindre privilège et revue des accès non démontrés ; accès à la forge à vérifier | E, C à obtenir | NV | MFA, RBAC, revue trimestrielle, journalisation | 1 |
-| E06 | PR | PR 3.6 | Cryptage et suppression des données | O | O01-O06 | O | O | Chiffrement non documenté ; suppression non prouvée | A | NV | Chiffrement au repos et en transit, gestion des clés, politique de suppression | 2 |
-| E07 | PR | PR 3.7 | Sauvegarde des données | O | O05, O06 | N | O | Réplication à Francfort ; restauration non testée ; sauvegarde des dépôts et artefacts à confirmer | D (fiche), test de restauration à obtenir | P | Tests de restauration, sauvegarde des dépôts et artefacts, journal, RTO/RPO | 2 |
-| E08 | PR | PR 3.8 | Développement | O | O01, O02, O04, O06 | O | N | Pas d'information sur Git, branches, revue, CI/CD, secrets, séparation dev/prod | A | NV | Git avec branches protégées, revue, commits signés, CI/CD isolé, coffre de secrets, SAST/DAST, séparation dev/prod, signature des artefacts | 2 |
-| E09 | PR | PR 3.9 | Disponibilité | O | O01-O04 | O | O | Redondance et capacités non documentées ; QoS 95 % non prouvée | A | NV | Architecture redondante, tests de charge, RTO/RPO | 2 |
-| E10 | DE | DE 4.1 | Enregistrement et surveillance | O | O01-O06 | O | N | Journaux non documentés ; pas de surveillance centralisée ; logs CI/CD à vérifier | A | NV | Centralisation des logs (y compris CI/CD), alertes, rétention | 1 |
-| E11 | DE | DE 4.2 | Annonce | O | O01-O06 | N | N | Aucune preuve de canal de signalement ; à vérifier | A | NV | Vérifier l'existence ; sinon, security.txt et une procédure de signalement | 3 |
-| E12 | RS/RC | RS/RC 5.1 | Gestion des incidents | O | Tous | O | N | Aucune preuve de procédure documentée ; à vérifier ; inclure la compromission CI/CD | A | NV | Vérifier l'existence ; sinon, procédure, astreinte et notification nLPD art. 24 | 1 |
-| E13 | RS/RC | RS/RC 5.2 | Planification d'urgence | O | O01-O06 | O | N | Aucune preuve de PCA/PRA ni de test ; rollback CI/CD à documenter | A | NV | Vérifier l'existence ; sinon, PCA/PRA, tests, rollback et communication | 1 |
-| E14 | GV | GV 1.3 | Contrôle du personnel | O | Tous | N | N | Pas d'information sur les vérifications | A | NV | Vérification des antécédents selon le rôle | 3 |
-| E15 | PR | PR 3.1 | Protection physique, configuration et exploitation | O | O01-O06 | O | O (partiel) | Pas de centre de données propre : la protection physique est couverte par le fournisseur ISO 27001 ; le durcissement des images, des postes et des runners n'est pas documenté | D (rapport ISO 27001) + A | P | Durcissement (référentiel CIS), images de base, registre des configurations, postes chiffrés | 2 |
-| E16 | PR | PR 3.4 | Sécurité du réseau | O | O01-O06 | O | N | Segmentation, filtrage et exposition de PostgreSQL et de l'API non documentés | A | NV | Segmentation, API gateway ou WAF, aucune base exposée directement à Internet | 2 |
-| E17 | PR | PR 3.5 | Protection contre les logiciels malveillants | O | O01, O02, O06 | O | N | EDR ou antivirus des postes et des runners non documenté ; les dispositifs des patients sont hors périmètre | A | NV | EDR sur les postes et les serveurs, analyse des artefacts | 3 |
-| E18 | RS/RC | RS/RC 5.3 | Communication | O | Tous | O | N | Rôles et canaux de communication de crise non documentés | A | NV | Plan de communication, porte-parole, canaux, modèles de message | 2 |
-| E19 | GV | GV 1.2* | Gestion des cyberrisques | N | - | - | - | Non applicable : exigence marquée d'un astérisque dans l'annexe C ; la MCSR remplace l'analyse de risques | - | NP | - | - |
-| E20 | ID | ID 2.1* | Objets informatiques à protéger | N | - | - | - | Non applicable : exigence marquée d'un astérisque ; le travail est fait en phase 2 | - | NP | - | - |
-: Pré-audit des 20 exigences fondamentales {.small tbl-colwidths="[4,5,7,13,4,7,4,5,19,7,4,16,4]"}
+| E01 | GV | GV 1.1 | Organisation de la sécurité | O | O01, O02 | O | Pas de responsable sécurité désigné ; le CTO gère de fait ; rôles non formalisés | E (entretien) | P | O | Désigner un responsable sécurité, formaliser les rôles et la communication | 1 |
+| E02 | GV | GV 1.4 | Formation et sensibilisation | O | O01, O02 | ? | Aucune information sur les formations | A — à obtenir | NV | O | Programme de sensibilisation annuel, preuves de participation | 2 |
+| E03 | ID | ID 2.2 | Chaîne d'approvisionnement | O | O01, O02 | O | Cloud ISO 27001 reçu ; preuves DPA, SOC 2 et contrats auth, SMS, ML, forge interne à obtenir | D (rapport ISO 27001) | P | O | Inventaire fournisseurs, DPA, preuves, plan de sortie | 1 |
+| E04 | PR | PR 3.2 | Gestion des faiblesses et vulnérabilités | O | O01, O02 | ? | Pas de preuve de veille, de scan de dépendances ni de gestion des correctifs | A — à obtenir | NV | O | Inventaire, veille CVE, SCA, gestion des correctifs | 2 |
+| E05 | PR | PR 3.3 | Identités et contrôles d'accès | O | O01, O02 | O (affirmé) | Auth SaaS présente ; MFA, moindre privilège et revue des accès non démontrés ; accès à la forge à vérifier | E, C à obtenir | NV | O | MFA, RBAC, revue trimestrielle, journalisation | 1 |
+| E06 | PR | PR 3.6 | Cryptage et suppression des données | O | O01, O02 | O (affirmé) | Chiffrement non documenté ; suppression non prouvée | A — à obtenir | NV | O | Chiffrement au repos et en transit, gestion des clés, politique de suppression | 2 |
+| E07 | PR | PR 3.7 | Sauvegarde des données | O | O01 | O | Réplication à Francfort ; restauration non testée ; sauvegarde des dépôts et artefacts à confirmer | D (document à obtenir), test de restauration à obtenir | P | O | Tests de restauration, sauvegarde des dépôts et artefacts, journal, RTO/RPO | 2 |
+| E08 | PR | PR 3.8 | Développement | O | O01 | ? | Pas d'information sur Git, branches, revue, CI/CD, secrets, séparation dev/prod | A — à obtenir | NV | O | Git avec branches protégées, revue, commits signés, CI/CD isolé, coffre de secrets, SAST/DAST, séparation dev/prod, signature des artefacts | 2 |
+| E09 | PR | PR 3.9 | Disponibilité | O | O01 | O (affirmé) | Redondance et capacités non documentées ; QoS 95 % non prouvée | A — à obtenir | NV | O | Architecture redondante, tests de charge, RTO/RPO | 2 |
+| E10 | DE | DE 4.1 | Enregistrement et surveillance | O | O01, O02 | ? | Journaux non documentés ; pas de surveillance centralisée ; logs CI/CD à vérifier | A — à obtenir | NV | O | Centralisation des logs (y compris CI/CD), alertes, rétention | 1 |
+| E11 | DE | DE 4.2 | Annonce | O | O01, O02 | ? | Aucune preuve de canal de signalement ; à vérifier | A — à obtenir | NV | O | Vérifier l'existence ; sinon, security.txt et une procédure de signalement | 3 |
+| E12 | RS/RC | RS/RC 5.1 | Gestion des incidents | O | O01, O02 | ? | Aucune preuve de procédure documentée ; à vérifier ; inclure la compromission CI/CD | A — à obtenir | NV | O | Vérifier l'existence ; sinon, procédure, astreinte et notification nLPD art. 24 | 1 |
+| E13 | RS/RC | RS/RC 5.2 | Planification d'urgence | O | O01 | ? | Aucune preuve de PCA/PRA ni de test ; rollback CI/CD à documenter | A — à obtenir | NV | O | Vérifier l'existence ; sinon, PCA/PRA, tests, rollback et communication | 1 |
+| E14 | GV | GV 1.3 | Contrôle du personnel | O | O01, O02 | ? | Pas d'information sur les vérifications | A — à obtenir | NV | O | Vérification des antécédents selon le rôle | 3 |
+| E15 | PR | PR 3.1 | Protection physique, configuration et exploitation | O | O01, O02 | O | Pas de centre de données propre : la protection physique est couverte par le fournisseur ISO 27001 ; le durcissement des images, des postes et des runners n'est pas documenté | D (rapport ISO 27001) + A | P | O | Durcissement (référentiel CIS), images de base, registre des configurations, postes chiffrés | 2 |
+| E16 | PR | PR 3.4 | Sécurité du réseau | O | O01 | ? | Segmentation, filtrage et exposition de PostgreSQL et de l'API non documentés | A — à obtenir | NV | O | Segmentation, API gateway ou WAF, aucune base exposée directement à Internet | 2 |
+| E17 | PR | PR 3.5 | Protection contre les logiciels malveillants | O | O01, O02 | ? | EDR ou antivirus des postes et des runners non documenté ; les dispositifs des patients sont hors périmètre | A — à obtenir | NV | O | EDR sur les postes et les serveurs, analyse des artefacts | 3 |
+| E18 | RS/RC | RS/RC 5.3 | Communication | O | O01, O02 | ? | Rôles et canaux de communication de crise non documentés | A — à obtenir | NV | O | Plan de communication, porte-parole, canaux, modèles de message | 2 |
+| E19 | GV | GV 1.2* | Gestion des cyberrisques | N | - | - | Non applicable : exigence marquée d'un astérisque dans l'annexe C ; la MCSR remplace l'analyse de risques | - | NP | - | - | - |
+| E20 | ID | ID 2.1* | Objets informatiques à protéger | N | - | - | Non applicable : exigence marquée d'un astérisque ; le travail est fait en phase 2 | - | NP | - | - | - |
+: Pré-audit des 20 exigences fondamentales {.small}
 :::
 
-La colonne « Accru » indique si l'exigence compte pour au moins un objet à protection accrue (O02, O04, O06).
+La colonne « Accru » vaut O pour toutes les exigences applicables : les deux objets O01 et O02 sont à besoin accru. Elle est conservée pour respecter le modèle. Les exigences transverses (E01, E02, E11, E12, E14, E18) concernent les deux objets.
 
 #### Indicateurs
 
@@ -254,7 +272,7 @@ Avec N = 20 exigences examinées, A = 18 applicables, S = 0, P = 4, NS = 0, NV =
 | Mécanismes existants avec écart ou preuve incomplète | mécanisme O et statut P ou NV | 7 (39 % de A) |
 : Indicateurs de maturité {.small}
 
-Ces chiffres restent provisoires : la plupart des NV signalent une preuve manquante, pas une absence de mécanisme.
+Ces chiffres restent provisoires : la plupart des NV signalent une preuve manquante, pas une absence de mécanisme. Aucun NS n'est prouvé à ce stade.
 
 #### Répartition par famille
 
@@ -270,30 +288,29 @@ Ces chiffres restent provisoires : la plupart des NV signalent une preuve manqua
 
 #### Répartition pour les objets à protection accrue
 
-La répartition porte sur les exigences citées dans la colonne « Exigences fondamentales de référence » de la phase 3. Une exigence peut concerner plusieurs objets ; elle est comptée pour chacun.
+La répartition porte sur les exigences citées dans la colonne « Exigences de référence » de la phase 3. Une exigence peut concerner plusieurs objets ; elle est comptée pour chacun. Les totaux ne s'additionnent donc pas.
 
 | Objet | S | P | NS | NV | NP | Total |
 |---|---|---|---|---|---|---|
+| O01 | 0 | 4 | 0 | 14 | 0 | 18 |
 | O02 | 0 | 1 | 0 | 6 | 0 | 7 |
-| O04 | 0 | 1 | 0 | 7 | 0 | 8 |
-| O06 | 0 | 1 | 0 | 7 | 0 | 8 |
-: Répartition pour O02, O04 et O06 {.small}
+: Répartition pour O01 et O02 {.small}
 
-Pour O02, les exigences retenues sont E03, E04, E05, E06, E08, E10 et E17. Pour O04 : E05, E06, E09, E10, E12, E15, E16 et E18. Pour O06 : E04, E05, E06, E08, E10, E13, E15 et E17. Une exigence transverse n'est comptée que pour les objets dont la liste de référence la cite : E01, E02, E11 et E14 ne sont comptées pour aucun des trois, et E12 seulement pour O04.
+Pour O01, les exigences retenues sont E01 à E18. Pour O02 : E03, E04, E05, E06, E08, E10 et E17. E01, E02, E11, E12, E14, E15 et E18 sont transverses et concernent aussi O02 dans le tableau d'audit, mais elles ne sont pas comptées dans la liste de référence O02 pour éviter de doubler les totaux. Une exigence transverse n'est comptée que pour les objets dont la liste de référence la cite.
 
 #### Mesures prioritaires
 
 ::: {.table-scroll}
 | Priorité | MTO | Écart traité | Objet(s) | Famille | Effort | Responsable | Échéance | Preuve |
 |---|---|---|---|---|---|---|---|---|
-| 1 | Désigner un responsable sécurité et formaliser les rôles | GV 1.1 | Tous | GV | S | CEO/CTO | 1 mois | Fiche de fonction, organigramme, communication |
-| 2 | MFA, RBAC, revue trimestrielle des accès | PR 3.3 | O01-O06 | PR | M | CTO/DevOps | 3 mois | Configuration, logs, comptes rendus de revue |
-| 3 | Sécuriser la chaîne de développement (Git, revue, CI/CD, secrets, séparation dev/prod) | PR 3.8 | O01, O02, O04, O06 | PR | M | CTO/DevOps | 3 mois | Branches protégées, revues, logs CI, coffre de secrets, preuve de séparation |
-| 4 | Inventaire fournisseurs, DPA, preuves ISO 27001/SOC 2 | ID 2.2 | O01-O06 | ID | M | CTO/achats | 3 mois | Registre, contrats, rapports |
-| 5 | Détection et réponse : journalisation centralisée, alertes, procédure d'incident et notification nLPD | DE 4.1, RS/RC 5.1 | Tous | DE, RS/RC | M | DevOps/CTO/DPO | 3 mois | Logs, tableau de bord, procédure, test, registre |
-| 6 | PCA/PRA, tests de restauration et rollback | RS/RC 5.2, PR 3.7 | O01-O06 | RS/RC | M | CTO/DevOps | 6 mois | Plan, rapport de test, RTO/RPO, procédure de rollback |
-| 7 | Pseudonymisation renforcée et tests de réidentification | O02 | O02 | PR/DE | M | Data/ML + DPO | 3 mois | Rapport de test, registre |
-| 8 | Redondance des alertes et mesure de latence | O04 | O04 | PR/DE | M | CTO/DevOps | 3 mois | Tableau de bord, test de bascule |
+| 1 | M01 — Désigner un responsable sécurité et formaliser les rôles | GV 1.1 | O01, O02 | GV | S | CEO/CTO | 1 mois | Fiche de fonction, organigramme, communication |
+| 2 | M02 — MFA, RBAC, revue trimestrielle des accès | PR 3.3 | O01, O02 | PR | M | CTO/DevOps | 3 mois | Configuration, logs, comptes rendus de revue |
+| 3 | M03 — Sécuriser la chaîne de développement (Git, revue, CI/CD, secrets, séparation dev/prod) | PR 3.8 | O01.5 | PR | M | CTO/DevOps | 3 mois | Branches protégées, revues, logs CI, coffre de secrets, preuve de séparation |
+| 4 | M04 — Inventaire fournisseurs, DPA, preuves ISO 27001/SOC 2 | ID 2.2 | O01, O02 | ID | M | CTO/achats | 3 mois | Registre, contrats, rapports |
+| 5 | M05 — Détection et réponse : journalisation centralisée, alertes, procédure d'incident et notification nLPD | DE 4.1, RS/RC 5.1 | O01, O02 | DE, RS/RC | M | DevOps/CTO/DPO | 3 mois | Logs, tableau de bord, procédure, test, registre |
+| 6 | M06 — PCA/PRA, tests de restauration et rollback | RS/RC 5.2, PR 3.7 | O01 | RS/RC | M | CTO/DevOps | 6 mois | Plan, rapport de test, RTO/RPO, procédure de rollback |
+| 7 | M07 — Pseudonymisation renforcée et tests de réidentification | Réidentification (P05) | O02 | PR/DE | M | Data/ML + DPO | 3 mois | Rapport de test, registre |
+| 8 | M08 — Redondance des alertes et mesure de latence | Alerte > 5 min (P03) | O01.3 | PR/DE | M | CTO/DevOps | 3 mois | Tableau de bord, test de bascule |
 : Mesures prioritaires {.small tbl-colwidths="[5,24,12,10,7,5,10,7,20]"}
 :::
 
@@ -303,55 +320,23 @@ Le durcissement (E15), la segmentation réseau (E16) et la protection contre les
 
 **PSSI de DataHealth SA, version 0.1**
 
-| Élément | Valeur |
+| Gestion du document | Valeur |
 |---|---|
-| Titre | Politique de sécurité des systèmes d'information |
-| Version / date | 0.1 / 23 octobre 2026 |
-| Propriétaire | CTO, en attendant la désignation d'un responsable sécurité |
-| Approbation | CEO |
-| Classification | Interne |
-| Révision | Annuelle, et après tout incident majeur ou changement important |
-| Diffusion | Collaborateurs, prestataires ayant accès aux systèmes |
+| Titre, version, date | Politique de sécurité des systèmes d'information, 0.1, 27 octobre 2026 |
+| Approbation, propriétaire | CEO, 27 octobre 2026 ; CTO (sécurité intérimaire) |
+| Diffusion, révision | Interne, collaborateurs et prestataires avec accès ; annuelle et après incident majeur |
 
 #### Plan de la politique
 
-| N° | Chapitre | Famille MCSR | Source dans le travail |
-|---|---|---|---|
-| 1 | Objet, périmètre et destinataires | GV | Phases 1 et 2 |
-| 2 | Enjeux, objectifs et cadre réglementaire | GV | Contexte réglementaire |
-| 3 | Principes directeurs | GV | Phases 2 et 3, audit |
-| 4 | Rôles et responsabilités | GV | Fiche d'état, finding E01 |
-| 5 | Inventaire et besoins de protection | ID | Phases 2 et 3 |
-| 6 | Gestion des risques et conformité | ID, GV | Audit et mesures prioritaires |
-| 7 | Exigences de protection | PR | Annexe C (PR, DE) |
-| 8 | Exigences complémentaires O02, O04 et O06 | PR, DE | Phase 4 |
-| 9 | Détection et journalisation | DE | Annexe C (DE 4.1, DE 4.2) |
-| 10 | Incidents, continuité et reprise | RS, RC | Annexe C (RS/RC 5.1 à 5.3) |
-| 11 | Tiers et sous-traitants | GV, ID | Phase 1.3, ID 2.2 |
-| 12 | Application, exceptions et révision | GV | Choix de rédaction |
+**Plan.** 1. Objet, périmètre et destinataires (GV ; phases 1-2). 2. Enjeux, objectifs et cadre réglementaire (GV ; contexte). 3. Principes directeurs (GV ; phases 2-3). 4. Rôles et responsabilités (GV ; E01). 5. Inventaire et besoins de protection (ID ; phases 2-3). 6. Gestion des risques et conformité (ID, GV ; audit). 7. Exigences de protection (PR ; annexe C). 8. Exigences complémentaires O01 et O02 (PR, DE ; phase 4). 9. Détection et journalisation (DE ; DE 4.1-4.2). 10. Incidents, continuité et reprise (RS, RC ; RS/RC 5.1-5.3). 11. Tiers et sous-traitants (GV, ID ; 1.3 et ID 2.2). 12. Application, exceptions et révision (GV).
 
 #### 1. Objet, périmètre et destinataires
 
-La présente politique fixe les règles de sécurité applicables aux systèmes d'information de DataHealth. Elle sert à protéger les données de santé et la continuité du service, et à fournir des preuves aux patients, aux hôpitaux et aux autorités.
-
-| Périmètre | Inclus | Exclu |
-|---|---|---|
-| Objets | O01 à O06 | Dispositifs connectés des patients, systèmes des hôpitaux |
-| Personnes | Collaborateurs, prestataires, fournisseurs avec accès | Patients, tiers sans accès |
-| Sites | Cloud (Suisse, Francfort, Irlande), forge Git/CI-CD (à confirmer), locaux DataHealth | Sites des hôpitaux |
+La présente politique fixe les règles de sécurité applicables aux systèmes d'information de DataHealth. Elle protège les données de santé et la continuité du service, et fournit des preuves aux patients, aux hôpitaux et aux autorités. Elle couvre O01 et O02, les collaborateurs et les prestataires avec accès ; elle exclut les dispositifs des patients et les systèmes hospitaliers. Sites : cloud (Suisse, Francfort, Irlande), authentification et SMS (Suisse), forge interne (Suisse) et locaux.
 
 #### 2. Enjeux, objectifs et cadre réglementaire
 
-Les données de santé sont sensibles au sens de la nLPD (art. 5 let. c). La politique protège leur confidentialité, leur intégrité, leur disponibilité et leur traçabilité. Elle tient compte du secret médical, de la réglementation sur les dispositifs médicaux, du RGPD dès l'ouverture en France, de l'AI Act et des contrats hospitaliers.
-
-| Texte | Exigence principale | Impact pour DataHealth |
-|---|---|---|
-| nLPD | Protection des données sensibles, sécurité, notification | Registre, analyse d'impact, notification |
-| CP art. 321 | Secret médical | Accès strict, traçabilité |
-| LDM/ODIm | Sécurité et vigilance des dispositifs médicaux | Qualification, documentation, cycle de vie IEC 62304 |
-| RGPD | Données de santé, analyse d'impact, notification 72 h | Dès l'ouverture en France |
-| AI Act | Système d'IA à haut risque | Documentation, supervision humaine |
-| Contrats hôpitaux | Confidentialité, disponibilité, audit | SLA, preuves, DPA |
+Les données de santé sont sensibles au sens de la nLPD (art. 5 let. c). La politique protège leur confidentialité, leur intégrité, leur disponibilité et leur traçabilité. Elle tient compte du secret médical (art. 321 CP), de la LDM/ODIm et de l'IEC 62304 pour la qualification dispositif médical, du RGPD dès l'ouverture en France (AIPD, transferts), de l'AI Act pour l'IA à haut risque et des contrats hospitaliers (confidentialité, SLA, audit, DPA).
 
 #### 3. Principes directeurs
 
@@ -365,113 +350,70 @@ Les données de santé sont sensibles au sens de la nLPD (art. 5 let. c). La pol
 
 #### 4. Rôles et responsabilités
 
-| Rôle | Responsabilités |
-|---|---|
-| CEO | Approuve la politique et alloue les moyens |
-| CTO | Responsable sécurité à titre intérimaire ; pilotage technique |
-| Responsable sécurité (à désigner) | Animation du système de management, suivi des écarts, reporting |
-| Responsable réglementaire/qualité | Conformité nLPD, LDM, analyse d'impact, contrats |
-| Propriétaires O01-O06 | Sécurité de leur objet et production des preuves |
-| DevOps/SRE | Exploitation, journaux, sauvegardes, correctifs, CI/CD |
-| Développeurs | Développement, tests, revue de code, respect des branches et des secrets |
-| Data/ML | Pseudonymisation, modèles, tests de réidentification |
-| RH | Vérification des antécédents, arrivées et départs |
-| Support | Signalement, cloisonnement, orientation |
-| Prestataires | Respect des clauses et notification d'incident |
-
-Les rôles sont des fonctions, pas des personnes ; chaque rôle dispose d'une suppléance.
+Le CEO approuve la politique et alloue les moyens ; le CTO assure la sécurité à titre intérimaire. Un responsable sécurité doit être désigné pour animer le système de management et suivre les écarts. Le responsable qualité et le DPO portent la conformité nLPD, LDM, AI Act et les contrats. Les propriétaires O01 et O02 répondent de la sécurité de leur objet. Le DevOps et les développeurs exploitent, journalisent, sauvegardent, corrigent et livrent. Data/ML, RH, support et prestataires appliquent la pseudonymisation, les antécédents, le signalement et les clauses. Les rôles sont des fonctions, pas des personnes ; chaque rôle a une suppléance.
 
 #### 5. Inventaire et besoins de protection
 
-Les objets O01 à O06 sont inventoriés. O02, O04 et O06 ont un besoin de protection accru. L'inventaire est revu au moins une fois par an et à chaque changement majeur.
+Les objets O01 et O02 sont inventoriés. Tous deux ont un besoin de protection accru. L'inventaire doit être revu au moins une fois par an et à chaque changement majeur.
 
 | Objet | Description | Propriétaire | Besoin |
 |---|---|---|---|
-| O01 | Plateforme de production et application mobile | CTO | Normal |
-| O02 | Data lake et chaîne d'entraînement ML | Data/ML lead | Accru |
-| O03 | Service d'identité et d'accès | CTO | Normal |
-| O04 | Détection et chaîne d'alerte | CTO/qualité | Accru |
-| O05 | Sauvegardes et restauration | DevOps | Normal |
-| O06 | Chaîne de développement et de livraison | CTO/DevOps | Accru |
+| O01 | Plateforme de production, d'accès, d'alerte et de livraison | CTO | Accru |
+| O02 | Data lake et chaîne d'entraînement ML | Responsable data/ML | Accru |
 
 #### 6. Gestion des risques et conformité
 
-Le cadre est la MCSR. Les écarts sont consignés dans un registre, avec un responsable, une échéance et une preuve. Une analyse d'impact est réalisée pour les traitements à risque élevé. Le CTO approuve les exceptions et les fait réviser chaque année.
-
-| Risque | Impact | Mesure principale | Référence |
-|---|---|---|---|
-| Accès hors périmètre | Élevé | MFA, RBAC, revue des accès | PR 3.3 |
-| Réidentification | Élevé | Pseudonymisation, tests | O02 |
-| Alerte tardive | Élevé | Redondance, mesure de latence | O04 |
-| Compromission de la chaîne CI/CD | Élevé | Branches protégées, revue, secrets, isolation | PR 3.8 |
-| Perte de données | Élevé | Sauvegardes, tests de restauration | PR 3.7 |
-| Fournisseur défaillant | Moyen | DPA, plan de sortie | ID 2.2 |
+Le cadre est la MCSR. Les écarts doivent être consignés dans un registre avec un responsable, une échéance et une preuve. Une analyse d'impact doit être réalisée pour les traitements à risque élevé. Le comité de sécurité (CEO, CTO, DPO) approuve les exceptions. Risques principaux : accès hors périmètre (MFA, RBAC, revue), réidentification (pseudonymisation, tests), alerte tardive ou compromission CI/CD (redondance, revue, isolation), perte de données ou défaillance fournisseur (sauvegardes, tests, DPA, sortie).
 
 #### 7. Exigences de protection
 
 | Domaine | Règle |
 |---|---|
-| Identités et accès | L'authentification multifacteur doit être activée pour les comptes de collaborateurs, les comptes administratifs et les accès aux données de santé. Les droits doivent suivre le moindre privilège et être revus chaque trimestre. Les accès doivent être révoqués sous 24 heures après un départ. |
-| Chiffrement | Les données doivent être chiffrées en transit (TLS 1.2 ou supérieur) et au repos (AES-256 ou équivalent). Les clés doivent être gérées séparément des données. Aucune donnée de santé ne doit être stockée en clair sur un téléphone. |
-| Développement et Git | Tout changement doit passer par une branche, une revue de code et la CI/CD. La branche principale doit être protégée et les commits signés. Les secrets doivent être stockés dans un coffre, jamais dans le code. Les dépendances doivent être analysées (SCA), les applications testées (SAST/DAST) et les artefacts signés. Les environnements de développement, de test et de production doivent être séparés. Aucun jeu de données de production ne doit être utilisé en test sans pseudonymisation. |
-| Sauvegardes | La stratégie 3-2-1 doit être appliquée. Les sauvegardes doivent être chiffrées et une restauration testée chaque trimestre. Les RTO doivent respecter les seuils de la fiche : API 4 h, portail 8 h, alerte 5 min, moteur 30 min. |
-| Réseau | Les environnements doivent être segmentés et les tenants hospitaliers isolés. Les bases de données ne doivent pas être exposées directement à Internet. |
-| Postes | Les disques doivent être chiffrés, les correctifs appliqués et un antivirus/EDR déployé. |
-| Sensibilisation | Chaque collaborateur doit suivre une formation annuelle et un exercice d'hameçonnage. |
+| Identités et accès | L'authentification multifacteur (MFA) doit être activée pour les collaborateurs, les administrateurs et les accès aux données de santé. Les droits doivent suivre le moindre privilège, être revus chaque trimestre et être révoqués sous 24 heures après un départ. |
+| Chiffrement et suppression | Les données doivent être chiffrées en transit (TLS 1.2 ou supérieur) et au repos (AES-256 ou équivalent), avec des clés séparées. Elles doivent être conservées selon le registre et supprimées de façon vérifiable à l'échéance. |
+| Développement et vulnérabilités | Tout changement doit passer par une branche, une revue et la CI/CD. La branche principale doit être protégée, les commits signés, les secrets stockés dans un coffre, les dépendances analysées (SCA), les applications testées (SAST/DAST) et les artefacts signés. Les correctifs critiques doivent être appliqués sous 30 jours, les majeurs sous 90 jours et les autres sous 180 jours. |
+| Sauvegardes et disponibilité | La stratégie 3-2-1 doit être appliquée. Les sauvegardes doivent être chiffrées, immuables si possible, et une restauration testée chaque trimestre. Les services critiques doivent être redondés. Les délais de reprise (RTO) sont API 4 h, portail 8 h, alerte 5 min et moteur 30 min ; la perte de données maximale (RPO) cible est de 15 min. |
+| Réseau et postes | Les environnements doivent être segmentés et les tenants isolés. Les bases ne doivent pas être exposées à Internet ; une passerelle API ou un pare-feu applicatif (WAF) doit protéger les interfaces. Les disques doivent être chiffrés et un outil de protection des postes et serveurs (EDR) déployé sur les postes, serveurs et runners. |
+| Signalement et sensibilisation | Un canal de signalement (security.txt, security@) doit être publié et tout signalement accusé sous deux jours ouvrés. Chaque collaborateur doit suivre une formation annuelle et un exercice d'hameçonnage. |
 
-#### 8. Exigences complémentaires O02, O04 et O06
+#### 8. Exigences complémentaires O01 et O02
+
+O01 et O02 doivent respecter les exigences complémentaires suivantes, au-delà de la protection de base.
 
 | Objet | Exigence complémentaire | Preuve attendue |
 |---|---|---|
-| O02 | Pseudonymisation renforcée, tests de réidentification, registre des datasets et des modèles, cloisonnement | Rapport de test, registre, logs |
-| O04 | Redondance des canaux, accusé de réception, mesure de latence, signature des alertes, journal immuable | Tableau de bord, journal, test de bascule |
-| O06 | Branches protégées, revue obligatoire, coffre de secrets, signature des artefacts, isolation des runners, rollback testé | Configuration, historique des revues, logs CI/CD, rapport de test |
+| O01 | Isolation des tenants ; MFA résistant au phishing ; accès juste-à-temps (JIT) ; revue trimestrielle ; redondance des alertes ; file persistante ; signature (HMAC) ; journal immuable ; branches protégées ; commits signés ; coffre ; signature des artefacts ; provenance ; runners isolés ; rollback ; sauvegardes immuables ; tests de restauration ; plan de continuité (PCA) et mode dégradé | Schéma, configuration, journaux, rapport de test, signatures, revues |
+| O02 | Pseudonymisation renforcée ; séparation zone brute / pseudonymisée ; tests de réidentification ; registre des datasets et modèles ; cloisonnement ; DPA avec le service ML (Irlande) | Rapport de test, registre, journaux, DPA |
 
 #### 9. Détection et journalisation
 
-Les journaux d'accès, d'administration, d'alerte, de sauvegarde, de modification de code et de déploiement doivent être centralisés, protégés et conservés selon une durée définie avec le DPO. Les données de santé ne doivent pas apparaître en clair dans les journaux. Des alertes doivent être définies pour les événements critiques.
-
-| Événement | Journalisé | Durée indicative | Alerte |
-|---|---|---|---|
-| Connexion | Oui | 6 à 12 mois | Échecs répétés |
-| Accès à un dossier | Oui | 6 à 12 mois | Accès hors périmètre |
-| Administration | Oui | 6 à 12 mois | Changement de rôle |
-| Alerte | Oui | 6 à 12 mois | Non acquittée sous 5 min |
-| Modification de code | Oui | 6 à 12 mois | Commit direct sur main |
-| Déploiement | Oui | 6 à 12 mois | Déploiement non tracé ou échoué |
-| Sauvegarde | Oui | 6 à 12 mois | Échec |
+Les journaux d'accès, d'administration, d'alerte, de sauvegarde, de modification de code et de déploiement doivent être centralisés, protégés et conservés six à douze mois, selon une durée définie avec le DPO. Les données de santé ne doivent pas apparaître en clair. Des alertes doivent être définies pour les événements critiques : échecs de connexion répétés, accès hors périmètre, changement de rôle, commit direct sur main, alerte non acquittée sous 5 min, échec de sauvegarde ou déploiement non tracé.
 
 #### 10. Incidents, continuité et reprise
 
-Une procédure d'incident définit les rôles, la gravité, l'escalade, la notification à la direction, aux clients et aux autorités (nLPD art. 24 ; RGPD 72 h si applicable). Un PCA/PRA couvre O01 à O06 et est testé au moins une fois par an.
-
-| Gravité | Exemple | Réaction | Notification |
-|---|---|---|---|
-| Critique | Alerte non délivrée, fuite de données, compromission de la chaîne CI/CD | Immédiate | Direction, clients, autorités après évaluation du DPO |
-| Majeur | Indisponibilité au-delà du seuil, accès suspect | Sous 1 h | Direction, clients |
-| Mineur | Échec de sauvegarde, vulnérabilité | Sous 1 jour | Responsable sécurité |
+Une procédure d'incident doit définir les rôles, la gravité, l'escalade et la notification à la direction, aux clients et aux autorités (nLPD art. 24 ; RGPD 72 h si applicable). Un PCA/PRA doit couvrir O01 et O02 et être testé au moins une fois par an. Un plan de communication de crise doit désigner un porte-parole et des canaux. Les incidents critiques (alerte non délivrée, fuite, compromission CI/CD) déclenchent une réaction immédiate ; les majeurs, une réaction sous 1 h ; les mineurs, sous 1 jour.
 
 #### 11. Tiers et sous-traitants
 
-Chaque fournisseur critique (cloud, authentification, ML, SMS, forge Git/CI-CD) fait l'objet d'une due diligence, d'un DPA, d'une clause d'audit, d'une localisation documentée et d'un plan de sortie. Les sous-traitants ultérieurs sont identifiés et approuvés.
+Chaque fournisseur critique (cloud, authentification, ML, SMS, forge Git/CI-CD) doit faire l'objet d'une due diligence, d'un DPA lorsque applicable, d'une clause d'audit, d'une localisation documentée et d'un plan de sortie. Les sous-traitants ultérieurs doivent être identifiés et approuvés.
 
-| Fournisseur | Service | Données | Localisation | Preuve attendue | Plan de sortie |
+| Fournisseur | Service | Données | Localisation | Preuve | Plan de sortie |
 |---|---|---|---|---|---|
-| Cloud | Hébergement et sauvegardes | Santé, dépôts et artefacts | Suisse (production), Francfort (sauvegardes) | ISO 27001, DPA | À documenter |
-| Auth SaaS | Identités | Identifiants | À confirmer | DPA, SOC 2 | À documenter |
+| Cloud | Hébergement, sauvegardes | Santé, dépôts, artefacts | Suisse, Francfort | ISO 27001, DPA | À documenter |
+| Auth SaaS | Identités | Identifiants | Suisse | DPA, SOC 2 | À documenter |
 | ML | Entraînement | Pseudonymisées | Irlande | DPA, ISO 27001 | À documenter |
-| SMS | Alertes | Contenu minimisé | À confirmer | DPA | À documenter |
-| Forge Git / CI-CD | Versionnement, builds, déploiement | Code source, artefacts, secrets | À confirmer | DPA, ISO 27001, SOC 2 | À documenter |
+| SMS | Alertes | Contenu minimisé | Suisse (externe) | DPA | À documenter |
+| Forge Git / CI-CD | Versionnement, builds | Code, artefacts, secrets | Interne (Suisse) | Contrôles internes, journaux | Export et réversibilité |
 
 #### 12. Application, exceptions et révision
 
-Toute dérogation doit être approuvée par le CTO, consignée dans un registre, limitée à six mois et réévaluée. La politique est révisée annuellement et après incident majeur. Les manquements peuvent entraîner des mesures disciplinaires.
+Toute dérogation doit être approuvée par le comité de sécurité (CEO, CTO, DPO), consignée, limitée à six mois et réévaluée. La politique doit être révisée annuellement et après incident majeur ; les manquements peuvent entraîner des mesures disciplinaires.
 
 ## Interprétation des résultats
 
-DataHealth a une plateforme qui fonctionne et une architecture cloud crédible, mais la sécurité repose encore sur le CTO et sur des mécanismes non prouvés. Les risques les plus lourds sont l'accès hors périmètre entre hôpitaux, la réidentification dans le data lake, la fiabilité des alertes, la compromission de la chaîne de développement et l'absence de preuves pour les acheteurs. La chaîne Git/CI-CD est un point de concentration : un seul pipeline peut modifier O01, O02 et O04. La série A et l'ouverture en France rendent ces sujets urgents.
+DataHealth a une plateforme qui fonctionne et une architecture cloud crédible, mais la sécurité repose encore sur le CTO et sur des mécanismes non prouvés. Les risques les plus lourds sont l'accès hors périmètre entre hôpitaux, la réidentification dans le data lake, la fiabilité des alertes, la compromission de la chaîne de développement et l'absence de preuves pour les acheteurs. La chaîne Git/CI-CD est un point de concentration dans O01.5 : un seul pipeline peut modifier O01.1, O01.3 et O02. La série A et l'ouverture en France rendent ces sujets urgents.
 
-L'analyse reste un pré-audit fondé sur les informations disponibles, avec 14 statuts NV à lever. Je n'applique ni threat modeling, ni phase 5, ni comparaison de cyberrésilience. L'audit couvre les 20 exigences de l'annexe C, y compris les deux non applicables : le taux de 90 % est explicite et n'écarte aucune partie du référentiel.
+L'analyse reste un pré-audit fondé sur les informations disponibles, avec 14 statuts NV à lever. Je n'applique ni threat modeling, ni phase 5, ni comparaison de cyberrésilience. L'audit couvre les 20 exigences de l'annexe C, y compris les deux non applicables : le taux de 90 % est explicite et n'écarte aucune partie du référentiel. Les deux objets retenus, O01 et O02, sont tous deux à besoin accru ; les sous-ensembles ne sont pas des objets supplémentaires.
 
 ## Que faire ensuite ?
 
@@ -506,8 +448,10 @@ L'analyse reste un pré-audit fondé sur les informations disponibles, avec 14 s
 
 - Méthode de cybersécurité et de résilience (MCSR), OFCS/NCSC, 2025, annexe C « Exigences fondamentales », p. 27 à 33.
 - Slides du chapitre 3, p. 59 à 66 (principes, exigences fondamentales, phases de la méthode).
-- Fiche `Partage activité MCSR.pdf` et mini-cas `03_MCSR/mini-cas.md` (contexte, processus, écarts maximaux admissibles).
-- Transcription de travail des exigences fondamentales : `03_MCSR/autres/MCSR/exigences-fondamentales-mcsr-2025.md`.
+- Mini-cas `mini-cas.md` (contexte, processus, écarts maximaux admissibles).
+- Entretien avec l'assistant-répondant, séance A5, 23 octobre 2026 (notes de l'auteur).
+- Modèles `exemples/modele-audit-maturite.md` et `exemples/modele-pssi-simplifiee.md`.
+- Transcription de travail des exigences fondamentales : `autres/MCSR/exigences-fondamentales-mcsr-2025.md`.
 - Loi fédérale sur la protection des données (nLPD), RS 235.1.
 - Code pénal suisse, art. 321 (violation du secret professionnel).
 - Loi fédérale sur les dispositifs médicaux (LDM), RS 812.213, et ODIm.
@@ -515,14 +459,18 @@ L'analyse reste un pré-audit fondé sur les informations disponibles, avec 14 s
 - ISO/IEC 27001:2022 ; ISO/IEC 27002:2022 ; ISO 27799 ; ISO 13485 ; ISO 14971 ; IEC 62304.
 - SLSA (provenance des artefacts).
 
+Les éléments de contexte proviennent du mini-cas et de l'entretien ; les volumes et seuils sont des hypothèses à valider.
+
 ## Utilisation IA
 
-J'ai utilisé un assistant IA pour structurer l'analyse, proposer des formulations et vérifier la cohérence des tableaux. Les faits viennent de la fiche DataHealth et de l'entretien avec l'assistant-répondant. Les propositions non validées restent signalées par « à confirmer ». J'ai relu et validé le contenu.
+J'ai utilisé un assistant IA pour structurer l'analyse, proposer des formulations et vérifier la cohérence des tableaux. Les faits viennent du mini-cas et de l'entretien avec l'assistant-répondant. Les propositions non validées restent signalées par « à confirmer ». J'ai relu et validé le contenu.
 
 ### Journal des sessions
 
 | Date | Outil | Objet de la session | Ce qui a été retenu | Ce qui a été écarté ou corrigé |
 |---|---|---|---|---|
-| Octobre 2026 | Assistant IA | Structuration de l'analyse, formulation des tableaux, cohérence d'ensemble | Plan des phases 1 à 4, libellés des tableaux, formulations de la PSSI | Propositions non vérifiées conservées comme « à confirmer » |
-
-Les échanges complets peuvent être joints en annexe sur demande.
+| 23 octobre 2026 | Assistant IA | Structuration de l'analyse, formulation des tableaux, cohérence d'ensemble | Plan des phases 1 à 4, titres et contenu des rubriques | Structure alignée sur le cahier de laboratoire et le mini-cas |
+| 23 octobre 2026 | Assistant IA | Structure des tableaux et composition des rubriques | Le fond et les formulations de la PSSI | Reformulation personnelle pour la compréhension |
+| 23 octobre 2026 | Assistant IA | Aide à la correction des diagrammes | Nécessité de schématiser les éléments textuels, conformément au P3 | Conserver le tableau des processus (conseil de l'assistant) alors que je voulais le supprimer |
+| 26 octobre 2026 | Assistant IA | Cohérence d'ensemble | Analyse de la cohérence entre les éléments produits et les exigences | Corrections de forme |
+| 27 octobre 2026 | Assistant IA | Mise en conformité avec le mini-cas | Agrégation en deux objets, audit, PSSI et références alignés | Suppression des références aux fichiers absents ; seuils marqués comme hypothèses |
